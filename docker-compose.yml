@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5432"   # Puerto 5433 en el host redirige al puerto 5432 del contenedor
+
+  app:
+    image: ala-70
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    environment:
+      # Variables para la configuración interna de Spring Boot
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_APPLICATION_NAME: apiExceltic.sergioMostacero
+      SERVER_PORT: 8000
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
