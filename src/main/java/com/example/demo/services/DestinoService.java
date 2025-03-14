@@ -1,52 +1,79 @@
 package com.example.demo.services;
 
-
-import java.util.List;
-import java.util.Optional;
-
+import com.example.demo.DTO.DestinoDTO;
+import com.example.demo.exceptions.ResourceNotFoundException;
+import com.example.demo.model.Destino;
+import com.example.demo.repository.DestinoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.Destino;
-import com.example.demo.repository.DestinoRepository;
-
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DestinoService {
 
-   @Autowired
-   private DestinoRepository destinoRepository;
+    @Autowired
+    private DestinoRepository destinoRepository;
 
+    public List<DestinoDTO> getAllDestinos() {
+        return destinoRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
 
-   public List<Destino> getDestinos(){
-      return destinoRepository.findAll();
-   }
+    public DestinoDTO getDestinoById(Long id) {
+        return destinoRepository.findById(id)
+                .map(this::convertToDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("Destino no encontrado con id: " + id));
+    }
 
-   public Destino getDestinoById(Long id){
-      return destinoRepository.findById(id)
-         .orElseThrow(() -> new RuntimeException("Destino no encontrado con ID: AAAAAAAAAAAAAAAY QUE ME CAGO" + id));
-   }
+    public DestinoDTO createDestino(DestinoDTO destinoDTO) {
+        Destino destino = convertToEntity(destinoDTO);
+        return convertToDTO(destinoRepository.save(destino));
+    }
 
-   public Destino deleteDestinoById(Long id){
-      Destino destino = getDestinoById(id);
-      destinoRepository.deleteById(id);
-      return destino;
-   }
-   //añadir destino para añadir con un fich img la foto y el nombre dle pais
-   public Destino createDestino(Destino destino){
-      return destinoRepository.save(destino);
-   }
+    public DestinoDTO updateDestino(Long id, DestinoDTO destinoDTO) {
+        if (destinoDTO == null) {
+            throw new IllegalArgumentException("El DTO del destino no puede ser nulo");
+        }
+        
+        Destino destino = destinoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Destino no encontrado con id: " + id));
+        
+        updateDestinoFields(destino, destinoDTO);
+        return convertToDTO(destinoRepository.save(destino));
+    }
 
-   public Destino updateDestinoName(Long id, String newName){
-      Destino destino = getDestinoById(id);
-      destino.setNombre(newName);
-      return destinoRepository.save(destino);
-   }
+    private void updateDestinoFields(Destino destino, DestinoDTO dto) {
+        destino.setNombre(dto.getNombre());
+        destino.setDescripcion(dto.getDescripcion());
+        destino.setImagenURL(dto.getImagenURL());
+    }
 
+    public void deleteDestino(Long id) {
+        destinoRepository.deleteById(id);
+    }
 
-public Destino deleteDestinoAdmin(Long destinoId, Long roleId) {
-    Destino destino = getDestinoById(destinoId);
-    destinoRepository.deleteById(destinoId);
-    return destino;
-}
+    private DestinoDTO convertToDTO(Destino destino) {
+        DestinoDTO dto = new DestinoDTO();
+        dto.setId(destino.getId());
+        dto.setNombre(destino.getNombre());
+        dto.setDescripcion(destino.getDescripcion());
+        dto.setImagenURL(destino.getImagenURL());
+        return dto;
+    }
+
+    private Destino convertToEntity(DestinoDTO dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("El DTO no puede ser nulo");
+        }
+        
+        Destino destino = new Destino();
+        destino.setId(dto.getId());
+        destino.setNombre(dto.getNombre());
+        destino.setDescripcion(dto.getDescripcion());
+        destino.setImagenURL(dto.getImagenURL());
+        return destino;
+    }
 }

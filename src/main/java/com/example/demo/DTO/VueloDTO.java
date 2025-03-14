@@ -8,14 +8,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Data;
+import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class VueloDTO {
+    private Long id;
+    private String origen;
+    private String destino;
+    private LocalDateTime fecha;
+    private Integer duracion;
+    private Long usuarioId;
+    private String usuarioNombre;
+
     @NotBlank(message = "Fecha de vuelo obligatorio")
-    private String fecha;
+    private String fecha_vuelo;
 
     @NotBlank(message = "Mercancia obligatorio")
     private String mercancia;

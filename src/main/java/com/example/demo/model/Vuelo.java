@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
 
 import com.example.demo.DTO.VueloDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,27 +14,41 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Entity
 @Table(name = "vuelos")
 public class Vuelo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     
-    @NotBlank(message = "Fecha de vuelo obligatorio")
-    private String fecha;
+    @Column(nullable = false)
+    private String origen;
+
+    @Column(nullable = false)
+    private String destino;
+
+    @Column(nullable = false)
+    private LocalDateTime fecha;
+
+    @Column(nullable = false)
+    private Integer duracion;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
     @NotBlank(message = "Mercancia obligatorio")
     private String mercancia;

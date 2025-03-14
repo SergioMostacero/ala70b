@@ -6,6 +6,7 @@ import com.example.demo.validation.CorrectNumber;
 import com.example.demo.validation.EmailConstraint;
 import com.example.demo.DTO.UsuarioDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
@@ -75,6 +76,7 @@ public class Usuario {
     private List<Vuelo> vuelos = new ArrayList<>();
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "rango_id")
     private Rango rango;
 

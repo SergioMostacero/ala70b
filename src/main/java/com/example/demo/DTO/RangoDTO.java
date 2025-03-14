@@ -8,17 +8,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class RangoDTO {
+
+    private Long id;
 
     @NotBlank(message = "Nombre de rango obligatorio")
     private String nombre;
 
     @NotBlank(message = "Imagen de medalla obligatoria")
     private String medallaURL;
+
+    private String descripcion;
 
 }

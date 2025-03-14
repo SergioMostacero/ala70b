@@ -19,25 +19,30 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.persistence.Column;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "destino")
+@Table(name = "destinos")
 public class Destino {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     
-    @NotBlank(message = "Nombre de destino obligatorio")
+    @Column(nullable = false)
     private String nombre;
+
+    @Column
+    private String descripcion;
+
+    @Column
+    private String imagenURL;
 
     @OneToMany(mappedBy = "destino", cascade = CascadeType.ALL)
     private List<Usuario> usuarios = new ArrayList<>();
-
-
 
 }

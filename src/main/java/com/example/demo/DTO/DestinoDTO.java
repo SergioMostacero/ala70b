@@ -8,15 +8,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class DestinoDTO {
-    
-    @NotBlank(message = "Nombre obligatorio")
+    private Long id;
     private String nombre;
+    private String descripcion;
+    private String imagenURL;
 
     @NotBlank(message = "Imagen de bandera obligatoria")
     private String banderaURL;

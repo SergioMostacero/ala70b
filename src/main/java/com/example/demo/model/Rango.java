@@ -15,27 +15,31 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Entity
-@Table(name = "rango")
-public class Rango{
+@Table(name = "rangos")
+public class Rango {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Nombre de rango obligatorio")
+    @Column(nullable = false)
     private String nombre;
 
+    @Column
+    private String descripcion;
+
+    @Column
+    private String medallaURL;
 
     @OneToMany(mappedBy = "rango")
+    @JsonIgnore
     private List<Usuario> usuario = new ArrayList<>();
-    
-    }
+}
