@@ -8,16 +8,16 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     ports:
-      - "5433:5432"   # Puerto 5433 en el host redirige al puerto 5432 del contenedor
+      - "5433:5432"
 
   app:
-    image: ala-70
+    build: . 
+    container_name: ala-70
     depends_on:
       - postgres
     ports:
       - "8000:8000"
     environment:
-      # Variables para la configuración interna de Spring Boot
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
