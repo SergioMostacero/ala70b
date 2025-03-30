@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.LoginRequest;
 import com.example.demo.model.Usuario;
 import com.example.demo.services.UsuarioService;
 
@@ -29,6 +30,14 @@ public class UsuarioController {
     public List<Usuario> getAllUsuarios() {
         return usuarioService.getUsuarios();
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<Usuario> login(@RequestBody LoginRequest loginRequest) {
+        Usuario usuario = usuarioService.login(loginRequest.getEmail(), loginRequest.getPassword());
+        return ResponseEntity.ok(usuario);
+    }
+
+
 
     @GetMapping("/{id}")
     public Usuario getUsuarioById(@PathVariable Long id) {
