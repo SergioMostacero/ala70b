@@ -7,13 +7,13 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.DTO.DestinoDTO;
-import com.example.demo.model.Destino;
+import com.example.demo.model.Localizacion;
 
 @Component
 public class DestinoMapperImpl implements DestinoMapper{
     
     @Override
-    public DestinoDTO toDTO(Destino destino){
+    public DestinoDTO toDTO(Localizacion destino){
         DestinoDTO destinoDTO = new DestinoDTO();
 
         destinoDTO.setNombre(destino.getNombre());
@@ -22,9 +22,9 @@ public class DestinoMapperImpl implements DestinoMapper{
     }
 
     @Override
-    public List<DestinoDTO> toListDTO(List<Destino>destinos){
+    public List<DestinoDTO> toListDTO(List<Localizacion>destinos){
         List<DestinoDTO> destinoDTOs = new ArrayList<>();
-        for (Destino destino : destinos) {
+        for (Localizacion destino : destinos) {
             destinoDTOs.add(toDTO(destino));
         }
         return destinoDTOs;

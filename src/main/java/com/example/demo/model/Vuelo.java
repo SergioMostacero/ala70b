@@ -1,19 +1,13 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -27,12 +21,6 @@ public class Vuelo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(nullable = false)
-    private String origen;
-
-    @Column(nullable = false)
-    private String destino;
 
     @Column(nullable = false)
     private LocalDateTime fecha;
@@ -40,16 +28,12 @@ public class Vuelo {
     @Column(nullable = false)
     private Integer duracion;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
-
     @NotBlank(message = "Mercancia obligatorio")
     private String mercancia;
 
     @NotBlank(message = "Modelo de avión de usuario obligatorio")
     private String modelo;
-    
+
     @NotBlank(message = "Ubicacion de salida obligatoria")
     private String ubi_salida;
 
@@ -83,9 +67,12 @@ public class Vuelo {
     @NotBlank(message = "Hotel obligatorio")
     private String hotel;
 
-    // In Vuelo.java
-    @ManyToMany(mappedBy = "vuelos", cascade = CascadeType.ALL) 
-    @JsonIgnore
-    private List<Usuario> usuarios = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
+
+    @ManyToOne
+    @JoinColumn(name = "destino_id", nullable = false)
+    private Vuelo localizacion;
 }

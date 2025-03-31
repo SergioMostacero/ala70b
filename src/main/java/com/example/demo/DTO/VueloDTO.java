@@ -1,21 +1,17 @@
 package com.example.demo.DTO;
 
-import com.example.demo.validation.CorrectNumber;
-import com.example.demo.validation.EmailConstraint;
+import java.time.LocalDateTime;
+
+import com.example.demo.model.Destino;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.Data;
-import java.time.LocalDateTime;
 
 @Data
 public class VueloDTO {
     private Long id;
     private String origen;
-    private String destino;
+    private Destino destino;
     private LocalDateTime fecha;
     private Integer duracion;
     private Long usuarioId;

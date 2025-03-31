@@ -2,7 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.DTO.DestinoDTO;
 import com.example.demo.exceptions.ResourceNotFoundException;
-import com.example.demo.model.Destino;
+import com.example.demo.model.Localizacion;
 import com.example.demo.repository.DestinoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class DestinoService {
     }
 
     public DestinoDTO createDestino(DestinoDTO destinoDTO) {
-        Destino destino = convertToEntity(destinoDTO);
+        Localizacion destino = convertToEntity(destinoDTO);
         return convertToDTO(destinoRepository.save(destino));
     }
 
@@ -38,14 +38,14 @@ public class DestinoService {
             throw new IllegalArgumentException("El DTO del destino no puede ser nulo");
         }
         
-        Destino destino = destinoRepository.findById(id)
+        Localizacion destino = destinoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Destino no encontrado con id: " + id));
         
         updateDestinoFields(destino, destinoDTO);
         return convertToDTO(destinoRepository.save(destino));
     }
 
-    private void updateDestinoFields(Destino destino, DestinoDTO dto) {
+    private void updateDestinoFields(Localizacion destino, DestinoDTO dto) {
         destino.setNombre(dto.getNombre());
         destino.setDescripcion(dto.getDescripcion());
         destino.setImagenURL(dto.getImagenURL());
@@ -55,7 +55,7 @@ public class DestinoService {
         destinoRepository.deleteById(id);
     }
 
-    private DestinoDTO convertToDTO(Destino destino) {
+    private DestinoDTO convertToDTO(Localizacion destino) {
         DestinoDTO dto = new DestinoDTO();
         dto.setId(destino.getId());
         dto.setNombre(destino.getNombre());
@@ -64,12 +64,12 @@ public class DestinoService {
         return dto;
     }
 
-    private Destino convertToEntity(DestinoDTO dto) {
+    private Localizacion convertToEntity(DestinoDTO dto) {
         if (dto == null) {
             throw new IllegalArgumentException("El DTO no puede ser nulo");
         }
         
-        Destino destino = new Destino();
+        Localizacion destino = new Localizacion();
         destino.setId(dto.getId());
         destino.setNombre(dto.getNombre());
         destino.setDescripcion(dto.getDescripcion());

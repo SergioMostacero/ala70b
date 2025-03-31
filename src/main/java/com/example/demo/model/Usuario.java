@@ -1,5 +1,4 @@
 package com.example.demo.model;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,14 +7,14 @@ import com.example.demo.validation.EmailConstraint;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -34,15 +33,16 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @NotBlank(message = "Nombre de usuario obligatorio")
     private String nombre;
 
     @NotBlank(message = "Apellido de usuario obligatorio")
-    private String apellido;
+    private String apellidos;
 
-    @NotBlank(message = "Apellido2 de usuario obligatorio")
-    private String apellido2;
+    @NotBlank(message = "El email de usuario es obligatorio")
+    @EmailConstraint(message = "Email en formato incorrecto, debe ser example@domain.com")
+    private String email;
 
     @NotBlank(message = "Grupo sanguineo obligatorio")
     private String grupo_sanguineo;
@@ -53,33 +53,25 @@ public class Usuario {
     @NotBlank(message = "Horas de vuelo obligatorio")
     private String horas_vuelo;
 
-    @NotBlank(message = "User mail is mandatory")
-    @EmailConstraint(message = "Invalid email format. Must be in the format example@domain.com")
-    private String email;
-    
-    @NotBlank(message = "User password is mandatory")
-    private String password;
-    
-    @NotBlank(message = "Phone number is mandatory")
-    @CorrectNumber(message = "phone number out of format")
-    private String phoneNumber;
+    @NotBlank(message = "La contraseña es obligatoria")
+    private String contrasena;
 
+    @NotBlank(message = "El número de teléfono es obligatorio")
+    @CorrectNumber(message = "Número de teléfono fuera de formato")
+    private String numeroTelefono;
 
-
-    @ManyToMany
-    @JoinTable(name = "usuario_vuelo", joinColumns = @JoinColumn(name = "usuario_id_fk"),
-        inverseJoinColumns = @JoinColumn(name = "vuelo_id_fk")
-    )
-    @JsonIgnore 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Vuelo> vuelos = new ArrayList<>();
+
+    @ManyToOne
+    @JsonManagedReference
+    @JoinColumn(name = "medalla_id")
+    private Medalla medalla;
 
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "rango_id")
     private Rango rango;
-
-    @ManyToOne
-    @JoinColumn(name = "destino_id")
-    private Destino destino;
 
 }

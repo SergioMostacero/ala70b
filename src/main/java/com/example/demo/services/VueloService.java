@@ -1,13 +1,14 @@
 package com.example.demo.services;
 
-import com.example.demo.DTO.VueloDTO;
-import com.example.demo.model.Vuelo;
-import com.example.demo.repository.VueloRepository;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.example.demo.DTO.VueloDTO;
+import com.example.demo.model.Localizacion;
+import com.example.demo.repository.VueloRepository;
 
 @Service
 public class VueloService {
@@ -28,12 +29,12 @@ public class VueloService {
     }
 
     public VueloDTO createVuelo(VueloDTO vueloDTO) {
-        Vuelo vuelo = convertToEntity(vueloDTO);
+        Localizacion vuelo = convertToEntity(vueloDTO);
         return convertToDTO(vueloRepository.save(vuelo));
     }
 
     public VueloDTO updateVuelo(Long id, VueloDTO vueloDTO) {
-        Vuelo vuelo = vueloRepository.findById(id)
+        Localizacion vuelo = vueloRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vuelo no encontrado"));
         vuelo.setOrigen(vueloDTO.getOrigen());
         vuelo.setDestino(vueloDTO.getDestino());
@@ -59,7 +60,7 @@ public class VueloService {
         vueloRepository.deleteById(id);
     }
 
-    private VueloDTO convertToDTO(Vuelo vuelo) {
+    private VueloDTO convertToDTO(Localizacion vuelo) {
         VueloDTO dto = new VueloDTO();
         dto.setId(vuelo.getId());
         dto.setOrigen(vuelo.getOrigen());
@@ -84,8 +85,8 @@ public class VueloService {
         return dto;
     }
 
-    private Vuelo convertToEntity(VueloDTO dto) {
-        Vuelo vuelo = new Vuelo();
+    private Localizacion convertToEntity(VueloDTO dto) {
+        Localizacion vuelo = new Localizacion();
         vuelo.setOrigen(dto.getOrigen());
         vuelo.setDestino(dto.getDestino());
         vuelo.setFecha(dto.getFecha());
