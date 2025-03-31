@@ -22,17 +22,20 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "misiones")
-public class Mision {
-
+@Table(name = "aviones")
+public class Avion {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    //enum
+    @Column 
     private String nombre;
 
-    @OneToMany(mappedBy = "misiones")
+    @OneToMany(mappedBy = "aviones")
     @JsonIgnore
     private List<Vuelo> vuelos = new ArrayList<>();
+
+
 }

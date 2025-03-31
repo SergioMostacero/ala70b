@@ -33,7 +33,7 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<Usuario> login(@RequestBody LoginRequest loginRequest) {
-        Usuario usuario = usuarioService.login(loginRequest.getEmail(), loginRequest.getPassword());
+        Usuario usuario = usuarioService.login(loginRequest.getEmail(), loginRequest.getContrasena());
         return ResponseEntity.ok(usuario);
     }
 

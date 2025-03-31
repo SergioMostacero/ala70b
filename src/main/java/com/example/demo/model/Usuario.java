@@ -60,18 +60,23 @@ public class Usuario {
     @CorrectNumber(message = "Número de teléfono fuera de formato")
     private String numeroTelefono;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "usuarios", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Vuelo> vuelos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "usuarios", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Tripulantes> tripulantes = new ArrayList<>();
 
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "medalla_id")
-    private Medalla medalla;
+    private Medalla medallas;
 
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "rango_id")
-    private Rango rango;
+    private Rango rangos;
 
 }

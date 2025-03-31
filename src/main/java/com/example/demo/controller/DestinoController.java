@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.DTO.DestinoDTO;
-import com.example.demo.services.DestinoService;
+import com.example.demo.services.LocalizacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.util.List;
 public class DestinoController {
 
     @Autowired
-    private DestinoService destinoService;
+    private LocalizacionService destinoService;
 
     @GetMapping
     public ResponseEntity<List<DestinoDTO>> getAllDestinos() {

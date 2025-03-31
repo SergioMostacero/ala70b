@@ -23,7 +23,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "localizacion")
+@Table(name = "localizaciones")
 public class Localizacion {
 
     @Id
@@ -39,7 +39,11 @@ public class Localizacion {
     @Column
     private String imagenURL;
 
-    @OneToMany(mappedBy = "destino", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "localizaciones", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Vuelo> vuelos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "localizaciones", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Escalas> escalas = new ArrayList<>();
 }

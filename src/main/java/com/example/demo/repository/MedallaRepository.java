@@ -3,9 +3,9 @@ package com.example.demo.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.model.Vuelo;
+import com.example.demo.model.Medalla;
+
 @Repository
-public interface VueloRepository extends JpaRepository<Vuelo,Long>{
-    boolean existsByModelo(String modelo);
+public interface MedallaRepository extends JpaRepository<Medalla, Long> {
 
 }

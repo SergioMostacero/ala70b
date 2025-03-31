@@ -7,13 +7,13 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.DTO.VueloDTO;
-import com.example.demo.model.Localizacion;
+import com.example.demo.model.Vuelo;
 
 @Component
 public class VueloMapperImpl implements VueloMapper{
     
     @Override
-    public VueloDTO toDTO(Localizacion vuelo){
+    public VueloDTO toDTO(Vuelo vuelo){
         VueloDTO vueloDTO = new VueloDTO();
 
         vueloDTO.setModelo(vuelo.getModelo());
@@ -22,9 +22,9 @@ public class VueloMapperImpl implements VueloMapper{
     }
 
     @Override
-    public List<VueloDTO> toListDTO(List<Localizacion>vuelos){
+    public List<VueloDTO> toListDTO(List<Vuelo>vuelos){
         List<VueloDTO> vueloDTOs = new ArrayList<>();
-        for (Localizacion vuelo : vuelos) {
+        for (Vuelo vuelo : vuelos) {
             vueloDTOs.add(toDTO(vuelo));
         }
         return vueloDTOs;

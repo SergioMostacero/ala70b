@@ -3,7 +3,7 @@ package com.example.demo.services;
 import com.example.demo.DTO.DestinoDTO;
 import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.model.Localizacion;
-import com.example.demo.repository.DestinoRepository;
+import com.example.demo.repository.LocalizacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class DestinoService {
+public class LocalizacionService {
 
     @Autowired
-    private DestinoRepository destinoRepository;
+    private LocalizacionRepository destinoRepository;
 
     public List<DestinoDTO> getAllDestinos() {
         return destinoRepository.findAll().stream()

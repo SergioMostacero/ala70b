@@ -12,9 +12,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "rangos")
 public class Rango {
@@ -32,7 +40,7 @@ public class Rango {
     @Column
     private String rangoURL;
 
-    @OneToMany(mappedBy = "rango")
+    @OneToMany(mappedBy = "rangos")
     @JsonIgnore
     private List<Usuario> usuarios = new ArrayList<>();
 }

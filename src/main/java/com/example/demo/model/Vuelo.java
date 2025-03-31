@@ -1,7 +1,13 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,11 +15,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "vuelos")
 public class Vuelo {
@@ -28,20 +43,11 @@ public class Vuelo {
     @Column(nullable = false)
     private Integer duracion;
 
-    @NotBlank(message = "Mercancia obligatorio")
-    private String mercancia;
-
     @NotBlank(message = "Modelo de avión de usuario obligatorio")
     private String modelo;
 
-    @NotBlank(message = "Ubicacion de salida obligatoria")
-    private String ubi_salida;
-
     @NotBlank(message = "Hora de salida obligatoria")
     private String hora_salida;
-
-    @NotBlank(message = "Ubicación de llegada obligatorio")
-    private String ubi_llegada;
 
     @NotBlank(message = "Hora de llegada obligatorio")
     private String hora_llegada;
@@ -68,11 +74,35 @@ public class Vuelo {
     private String hotel;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
-
+    @JoinColumn(name = "usuarios", nullable = false)
+    private Usuario usuarios;
 
     @ManyToOne
-    @JoinColumn(name = "destino_id", nullable = false)
-    private Vuelo localizacion;
+    @JoinColumn(name = "localizaciones", nullable = false)
+    private Localizacion localizaciones;
+
+    @OneToMany(mappedBy = "vuelos", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Escalas> escalas = new ArrayList<>();
+
+    @OneToMany(mappedBy = "vuelos", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Tripulantes> tripulantes = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "mercancia_id")
+    @JsonManagedReference
+    private Mercancia mercancias;
+
+    @ManyToOne
+    @JoinColumn(name = "avion_id")
+    @JsonManagedReference
+    private Avion aviones;
+
+    @ManyToOne
+    @JoinColumn(name = "mision_id")
+    @JsonManagedReference
+    private Mision misiones;
+
+
 }

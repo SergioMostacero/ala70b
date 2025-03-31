@@ -19,8 +19,8 @@ public class UsuarioService {
       return usuarioRepository.findAll();
    }
 
-   public Usuario login(String email, String password) {
-      return usuarioRepository.findByEmailAndPassword(email, password)
+   public Usuario login(String email, String contrasena) {
+      return usuarioRepository.findByEmailAndContrasena(email, contrasena)
           .orElseThrow(() -> new RuntimeException("Usuario no encontrado o credenciales incorrectas"));
    }
   

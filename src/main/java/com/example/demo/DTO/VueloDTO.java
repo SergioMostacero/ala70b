@@ -2,62 +2,61 @@ package com.example.demo.DTO;
 
 import java.time.LocalDateTime;
 
-import com.example.demo.model.Destino;
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+/**
+ * A DTO representing the Vuelo entity, including references by ID
+ * to Usuario, Destino (Localizacion), Mercancia, Avion, and Mision.
+ */
 @Data
 public class VueloDTO {
+
     private Long id;
-    private String origen;
-    private Destino destino;
+
     private LocalDateTime fecha;
+
     private Integer duracion;
-    private Long usuarioId;
-    private String usuarioNombre;
 
-    @NotBlank(message = "Fecha de vuelo obligatorio")
-    private String fecha_vuelo;
-
-    @NotBlank(message = "Mercancia obligatorio")
-    private String mercancia;
-
-    @NotBlank(message = "Modelo de avión de usuario obligatorio")
+    @NotBlank(message = "Modelo de avión obligatorio")
     private String modelo;
-    
-    @NotBlank(message = "Ubicacion de salida obligatoria")
-    private String ubi_salida;
 
     @NotBlank(message = "Hora de salida obligatoria")
-    private String hora_salida;
+    private String horaSalida;
 
-    @NotBlank(message = "Ubicación de llegada obligatorio")
-    private String ubi_llegada;
+    @NotBlank(message = "Hora de llegada obligatoria")
+    private String horaLlegada;
 
-    @NotBlank(message = "Hora de llegada obligatorio")
-    private String hora_llegada;
+    @NotBlank(message = "Horas mes obligatorias")
+    private String horasMes;
 
-    @NotBlank(message = "Horas mes obligatorio")
-    private String horas_mes;
+    @NotBlank(message = "Horas año obligatorias")
+    private String horasAnio;
 
-    @NotBlank(message = "Horas año obligatorio")
-    private String horas_año;
+    @NotBlank(message = "Horas totales obligatorias")
+    private String horasTotales;
 
-    @NotBlank(message = "Horas totales obligatorio")
-    private String horas_totales;
-
-    @NotBlank(message = "anticipo obligatorio")
+    @NotBlank(message = "Anticipo obligatorio")
     private String anticipo;
 
-    @NotBlank(message = "Liquido obligatorio")
+    @NotBlank(message = "Líquido obligatorio")
     private String liquido;
 
-    @NotBlank(message = "Gasolina obligatorio")
+    @NotBlank(message = "Gasolina obligatoria")
     private String gasolina;
 
     @NotBlank(message = "Hotel obligatorio")
     private String hotel;
 
-    UsuarioDTO usuarioDTO;
+    private Long usuarioId;     
+    private Long destinoId;      
+    private Long mercanciaId;    
+    private Long avionId;     
+    private Long misionId;      
+
+    private String usuarioNombre;
+    private String destinoNombre;
+    private String mercanciaNombre;
+    private String avionNombre;
+    private String misionNombre;
 }
