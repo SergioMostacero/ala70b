@@ -1,9 +1,13 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -67,7 +72,7 @@ public class Vuelo {
 
     @NotBlank(message = "Hotel obligatorio")
     private String hotel;
-    
+
     @ManyToOne
     @JoinColumn(name = "avion_id")
     @JsonManagedReference
@@ -78,7 +83,9 @@ public class Vuelo {
     @JsonManagedReference
     private Mision misiones;
 
-
-
+    @ManyToOne
+    @JoinColumn(name = "itinerario_id")
+    @JsonManagedReference
+    private Itinerario itinerario;
 
 }

@@ -26,18 +26,17 @@ import lombok.Setter;
 @Entity
 @Table(name = "aviones")
 public class Avion {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //enum
-    @Column 
+    // enum
+    @Column
     private String nombre;
 
-    @OneToMany(mappedBy = "aviones")
+    @OneToMany(mappedBy = "avion")
     @JsonIgnore
-    private List<Vuelo> vuelos = new ArrayList<>();
-
+    private List<Vuelo> vuelos;
 
 }
