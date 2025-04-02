@@ -1,11 +1,11 @@
 package com.example.demo.repository;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.model.Escalas;
+import com.example.demo.model.GrupoSanguineo;
 
 @Repository
-public interface EscalaRepository extends JpaRepository<Escalas, Long> {
+public interface GrupoSanguineoRepository extends JpaRepository<GrupoSanguineo, Long> {
 
 }
-

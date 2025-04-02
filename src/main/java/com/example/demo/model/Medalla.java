@@ -38,7 +38,4 @@ public class Medalla {
     @Column
     private String medallaURL;
 
-    @OneToMany(mappedBy = "medallas")
-    @JsonIgnore
-    private List<Usuario> usuarios = new ArrayList<>();
 }

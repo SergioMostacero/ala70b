@@ -13,21 +13,21 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioDTO {
+public class TripulantesDTO {
     
-    @NotBlank(message = "Nombre de usuario obligatorio")
+    @NotBlank(message = "Nombre de Tripulantes obligatorio")
     private String nombre;
 
-    @NotBlank(message = "Apellido de usuario obligatorio")
+    @NotBlank(message = "Apellido de Tripulantes obligatorio")
     private String apellido;
 
-    @NotBlank(message = "Apellido2 de usuario obligatorio")
+    @NotBlank(message = "Apellido2 de Tripulantes obligatorio")
     private String apellido2;
 
     @NotBlank(message = "Grupo sanguineo obligatorio")
     private String grupo_sanguineo;
 
-    @NotBlank(message = "Antigüedad de usuario obligatorio")
+    @NotBlank(message = "Antigüedad de Tripulantes obligatorio")
     private String antiguedad;
 
     @NotBlank(message = "Horas de vuelo obligatorio")

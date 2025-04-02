@@ -40,7 +40,4 @@ public class Rango {
     @Column
     private String rangoURL;
 
-    @OneToMany(mappedBy = "rangos")
-    @JsonIgnore
-    private List<Usuario> usuarios = new ArrayList<>();
 }

@@ -1,13 +1,9 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -72,37 +67,18 @@ public class Vuelo {
 
     @NotBlank(message = "Hotel obligatorio")
     private String hotel;
-
-    @ManyToOne
-    @JoinColumn(name = "usuarios", nullable = false)
-    private Usuario usuarios;
-
-    @ManyToOne
-    @JoinColumn(name = "localizaciones", nullable = false)
-    private Localizacion localizaciones;
-
-    @OneToMany(mappedBy = "vuelos", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Escalas> escalas = new ArrayList<>();
-
-    @OneToMany(mappedBy = "vuelos", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Tripulantes> tripulantes = new ArrayList<>();
-
-    @ManyToOne
-    @JoinColumn(name = "mercancia_id")
-    @JsonManagedReference
-    private Mercancia mercancias;
-
+    
     @ManyToOne
     @JoinColumn(name = "avion_id")
     @JsonManagedReference
-    private Avion aviones;
+    private Avion avion;
 
     @ManyToOne
     @JoinColumn(name = "mision_id")
     @JsonManagedReference
     private Mision misiones;
+
+
 
 
 }
