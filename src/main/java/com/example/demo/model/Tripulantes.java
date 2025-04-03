@@ -43,6 +43,12 @@ public class Tripulantes {
     @Column
     private String contrasena;
 
+    @Column
+    private String antiguedad;
+
+    @Column
+    private String horas_vuelo;
+
     @ManyToOne
     @JoinColumn(name = "grupo_sanguineo_id", nullable = false)
     private GrupoSanguineo grupoSanguineo;
