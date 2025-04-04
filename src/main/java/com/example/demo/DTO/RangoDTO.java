@@ -15,12 +15,11 @@ public class RangoDTO {
 
     private Long id;
 
-    @NotBlank(message = "Nombre de rango obligatorio")
     private String nombre;
 
-    @NotBlank(message = "Imagen de medalla obligatoria")
-    private String medallaURL;
-
     private String descripcion;
+
+    private String rangoURL;
+
 
 }

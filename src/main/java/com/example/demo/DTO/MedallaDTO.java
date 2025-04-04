@@ -1,15 +1,15 @@
 package com.example.demo.DTO;
 
-import java.util.List;
-
 import lombok.Data;
 
-@Data
-public class AvionDTO {
-
+@Data   
+public class MedallaDTO {
     private Long id;
 
     private String nombre;
 
-    private List<VueloDTO> vueloDTOs;
+    private String descripcion;
+
+    private String medallaURL;
+
 }

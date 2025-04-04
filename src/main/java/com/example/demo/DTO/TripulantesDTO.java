@@ -1,48 +1,45 @@
 package com.example.demo.DTO;
 
-import com.example.demo.validation.CorrectNumber;
-import com.example.demo.validation.EmailConstraint;
+import java.util.List;
 
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.example.demo.model.GrupoSanguineo;
+import com.example.demo.model.Medalla;
+import com.example.demo.model.Oficio;
+import com.example.demo.model.Rango;
+import com.example.demo.model.Vuelo;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+
+import lombok.Data;
+
+
+@Data
 public class TripulantesDTO {
     
-    @NotBlank(message = "Nombre de Tripulantes obligatorio")
+    private Long id;
+
     private String nombre;
 
-    @NotBlank(message = "Apellido de Tripulantes obligatorio")
-    private String apellido;
-
-    @NotBlank(message = "Apellido2 de Tripulantes obligatorio")
-    private String apellido2;
-
-    @NotBlank(message = "Grupo sanguineo obligatorio")
-    private String grupo_sanguineo;
-
-    @NotBlank(message = "Antigüedad de Tripulantes obligatorio")
-    private String antiguedad;
-
-    @NotBlank(message = "Horas de vuelo obligatorio")
-    private String horas_vuelo;
-
-    @NotBlank(message = "User mail is mandatory")
-    @EmailConstraint(message = "Invalid email format. Must be in the format example@domain.com")
     private String email;
 
-    @NotBlank(message = "Phone number is mandatory")
-    @CorrectNumber(message = "phone number out of format")
-    private String phoneNumber;
+    private String contrasena;
 
-    VueloDTO vueloDTO;
-    RangoDTO rangoDTO;
-    DestinoDTO destinoDTO;
+    private int antiguedad;
+
+    private String horas_mes;
+
+    private String horas_año;
+
+    private String horas_totales;
+
+    private GrupoSanguineoDTO grupoSanguineoDTO;
+
+    List<MedallaDTO> medallasDTO;
+
+    private RangoDTO rangoDTO;
+
+    private OficioDTO oficioDTO;
+
+    List<Vuelo> vuelos;
+
 
 }

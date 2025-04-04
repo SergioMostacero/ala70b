@@ -3,6 +3,8 @@ package com.example.demo.DTO;
 import java.time.LocalDateTime;
 
 import com.example.demo.model.Avion;
+import com.example.demo.model.Itinerario;
+import com.example.demo.model.Mision;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -13,50 +15,22 @@ import lombok.Data;
  */
 @Data
 public class VueloDTO {
-
     private Long id;
 
     private LocalDateTime fecha;
 
-    private Integer duracion;
+    private String hora_salida;
 
-    @NotBlank(message = "Modelo de avión obligatorio")
-    private String modelo;
+    private String hora_llegada;
 
-    @NotBlank(message = "Hora de salida obligatoria")
-    private String horaSalida;
-
-    @NotBlank(message = "Hora de llegada obligatoria")
-    private String horaLlegada;
-
-    @NotBlank(message = "Horas mes obligatorias")
-    private String horasMes;
-
-    @NotBlank(message = "Horas año obligatorias")
-    private String horasAnio;
-
-    @NotBlank(message = "Horas totales obligatorias")
-    private String horasTotales;
-
-    @NotBlank(message = "Anticipo obligatorio")
     private String anticipo;
 
-    @NotBlank(message = "Líquido obligatorio")
-    private String liquido;
-
-    @NotBlank(message = "Gasolina obligatoria")
     private String gasolina;
 
+    private AvionDTO avionDTO;
 
-    private Long usuarioId;     
-    private Long destinoId;      
-    private Long mercanciaId;    
-    private Long avionId;     
-    private Long misionId;      
+    private MisionDTO misionesDTO;
 
-    private String usuarioNombre;
-    private String destinoNombre;
-    private String mercanciaNombre;
-    private String avionNombre;
-    private String misionNombre;
+    private ItinerarioDTO itinerarioDTO;
+
 }
