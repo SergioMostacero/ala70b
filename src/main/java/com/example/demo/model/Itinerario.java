@@ -32,6 +32,8 @@ public class Itinerario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String nombre;
+
     @OneToMany(mappedBy = "itinerario")
     @JsonIgnore
     private List<ItinerarioUbicacion> itinerarioUbicaciones;

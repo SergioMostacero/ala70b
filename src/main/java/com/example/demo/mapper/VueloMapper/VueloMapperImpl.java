@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.example.demo.DTO.AvionDTO;
 import com.example.demo.DTO.VueloDTO;
 import com.example.demo.model.Vuelo;
 
@@ -15,8 +16,10 @@ public class VueloMapperImpl implements VueloMapper{
     @Override
     public VueloDTO toDTO(Vuelo vuelo){
         VueloDTO vueloDTO = new VueloDTO();
-
-        vueloDTO.setAvionNombre(vuelo.getAvion().getNombre());
+        AvionDTO avionDTO = new AvionDTO();
+        avionDTO.setNombre(vuelo.getAvion().getNombre());
+        
+        vueloDTO.setAvionDTO(avionDTO);
 
         return vueloDTO;
     }

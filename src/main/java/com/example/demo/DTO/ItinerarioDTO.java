@@ -15,5 +15,7 @@ public class ItinerarioDTO {
     
     private Long id;
     
+    private String nombre;
+
     private List<ItinerarioUbicacionDTO> ItinerarioUbicacionDTO;
 }

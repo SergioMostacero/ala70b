@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +40,17 @@ public class Tripulantes {
     private String nombre;
 
     @Column
+    private String apellidos;
+
+    
+    @Column
     private String email;
 
     @Column
     private String contrasena;
 
     @Column
-    private int antiguedad;
+    private Date antiguedad;
 
     private String horas_mes;
 
