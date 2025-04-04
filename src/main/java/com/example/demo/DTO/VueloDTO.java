@@ -2,6 +2,8 @@ package com.example.demo.DTO;
 
 import java.time.LocalDateTime;
 
+import com.example.demo.model.Avion;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -45,8 +47,6 @@ public class VueloDTO {
     @NotBlank(message = "Gasolina obligatoria")
     private String gasolina;
 
-    @NotBlank(message = "Hotel obligatorio")
-    private String hotel;
 
     private Long usuarioId;     
     private Long destinoId;      

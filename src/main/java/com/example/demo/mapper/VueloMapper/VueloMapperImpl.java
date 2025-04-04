@@ -16,7 +16,7 @@ public class VueloMapperImpl implements VueloMapper{
     public VueloDTO toDTO(Vuelo vuelo){
         VueloDTO vueloDTO = new VueloDTO();
 
-        vueloDTO.setModelo(vuelo.getModelo());
+        vueloDTO.setAvionNombre(vuelo.getAvion().getNombre());
 
         return vueloDTO;
     }

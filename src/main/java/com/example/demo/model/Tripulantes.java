@@ -17,6 +17,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,10 +45,16 @@ public class Tripulantes {
     private String contrasena;
 
     @Column
-    private String antiguedad;
+    private int antiguedad;
 
-    @Column
-    private String horas_vuelo;
+    @NotBlank(message = "Horas mes obligatorio")
+    private String horas_mes;
+
+    @NotBlank(message = "Horas año obligatorio")
+    private String horas_año;
+
+    @NotBlank(message = "Horas totales obligatorio")
+    private String horas_totales;
 
     @ManyToOne
     @JoinColumn(name = "grupo_sanguineo_id", nullable = false)

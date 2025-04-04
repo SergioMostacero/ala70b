@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -29,13 +30,25 @@ public class Ubicacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
+    @Column
+    private String paisCodigo;
+
+    @Column
     private String pais;
 
+    @Column
     private String ciudad;
 
-    private String descripcion;
+    @Column
+    private String zonaHoraria;
+
+    @Column
+    private String latitud;
+
+    @Column
+    private String longitud;
 
     @OneToMany(mappedBy = "ubicacion")
     @JsonIgnore

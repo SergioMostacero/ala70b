@@ -40,11 +40,6 @@ public class Vuelo {
     @Column(nullable = false)
     private LocalDateTime fecha;
 
-    @Column(nullable = false)
-    private Integer duracion;
-
-    @NotBlank(message = "Modelo de avión de usuario obligatorio")
-    private String modelo;
 
     @NotBlank(message = "Hora de salida obligatoria")
     private String hora_salida;
@@ -52,26 +47,12 @@ public class Vuelo {
     @NotBlank(message = "Hora de llegada obligatorio")
     private String hora_llegada;
 
-    @NotBlank(message = "Horas mes obligatorio")
-    private String horas_mes;
-
-    @NotBlank(message = "Horas año obligatorio")
-    private String horas_año;
-
-    @NotBlank(message = "Horas totales obligatorio")
-    private String horas_totales;
-
     @NotBlank(message = "anticipo obligatorio")
     private String anticipo;
-
-    @NotBlank(message = "Liquido obligatorio")
-    private String liquido;
 
     @NotBlank(message = "Gasolina obligatorio")
     private String gasolina;
 
-    @NotBlank(message = "Hotel obligatorio")
-    private String hotel;
 
     @ManyToOne
     @JoinColumn(name = "avion_id")
