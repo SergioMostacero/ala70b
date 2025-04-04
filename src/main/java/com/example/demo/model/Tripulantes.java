@@ -47,13 +47,10 @@ public class Tripulantes {
     @Column
     private int antiguedad;
 
-    @NotBlank(message = "Horas mes obligatorio")
     private String horas_mes;
 
-    @NotBlank(message = "Horas año obligatorio")
     private String horas_año;
 
-    @NotBlank(message = "Horas totales obligatorio")
     private String horas_totales;
 
     @ManyToOne

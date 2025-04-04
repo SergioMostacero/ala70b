@@ -5,7 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.Ubicacion;
 
+import io.micrometer.core.instrument.Meter.Id;
+
 @Repository
-public interface UbicacionRepository extends JpaRepository<Ubicacion, Long> {
-    boolean existsByNombre(String nombre);
+public interface UbicacionRepository extends JpaRepository<Ubicacion, Integer> {
 }

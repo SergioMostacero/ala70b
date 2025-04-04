@@ -12,37 +12,37 @@ import com.example.demo.repository.TripulantesRepository;
 public class TripulantesService {
 
    @Autowired
-   private TripulantesRepository TripulantesRepository;
+   private TripulantesRepository tripulantesRepository;
 
-   public List<Tripulantes> getTripulantess() {
-      return TripulantesRepository.findAll();
+   public List<Tripulantes> getTripulantes() {
+      return tripulantesRepository.findAll();
    }
 
    public Tripulantes login(String email, String contrasena) {
-      return TripulantesRepository.findByEmailAndContrasena(email, contrasena)
+      return tripulantesRepository.findByEmailAndContrasena(email, contrasena)
           .orElseThrow(() -> new RuntimeException("Tripulantes no encontrado o credenciales incorrectas"));
    }
   
   
    public Tripulantes getTripulantesById(Long id) {
-      return TripulantesRepository.findById(id)
+      return tripulantesRepository.findById(id)
          .orElseThrow(() -> new RuntimeException("Tripulantes no encontrado con ID: " + id));
    }
 
    public Tripulantes deleteTripulantesById(Long id) {
-      Tripulantes Tripulantes = getTripulantesById(id);
-      TripulantesRepository.deleteById(id);
-      return Tripulantes;
+      Tripulantes tripulantes = getTripulantesById(id);
+      tripulantesRepository.deleteById(id);
+      return tripulantes;
    }
 
-   public Tripulantes createTripulantes(Tripulantes Tripulantes) {
-      return TripulantesRepository.save(Tripulantes);
+   public Tripulantes createTripulantes(Tripulantes tripulantes) {
+      return tripulantesRepository.save(tripulantes);
    }
 
    public Tripulantes updateTripulantesName(Long id, String newName) {
-      Tripulantes Tripulantes = getTripulantesById(id);
-      Tripulantes.setNombre(newName);
-      return TripulantesRepository.save(Tripulantes);
+      Tripulantes tripulantes = getTripulantesById(id);
+      tripulantes.setNombre(newName);
+      return tripulantesRepository.save(tripulantes);
    }
 }
    

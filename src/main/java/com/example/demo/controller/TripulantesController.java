@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,44 +19,48 @@ import com.example.demo.model.Tripulantes;
 import com.example.demo.services.TripulantesService;
 
 @RestController
-@RequestMapping("/api/Tripulantess")
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/tripulantes")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TripulantesController {
 
     @Autowired
-    private TripulantesService TripulantesService;
+    private TripulantesService tripulantesService;
 
     @GetMapping
     public List<Tripulantes> getAllTripulantess() {
-        return TripulantesService.getTripulantess();
+        return tripulantesService.getTripulantes();
     }
 
-    // @PostMapping("/login")
-    // public ResponseEntity<Tripulantes> login(@RequestBody LoginRequest loginRequest) {
-    //     Tripulantes Tripulantes = TripulantesService.login(loginRequest.getEmail(), loginRequest.getContrasena());
-    //     return ResponseEntity.ok(Tripulantes);
-    // }
+    @PostMapping("/login")
+    public ResponseEntity<Tripulantes> login(@RequestBody Map<String, String> credenciales) {
+        Tripulantes usuarioAutenticado = tripulantesService.login(
+            credenciales.get("email"), 
+            credenciales.get("contrasena")
+        );
+        return ResponseEntity.ok(usuarioAutenticado);
+    }
+
 
 
 
     @GetMapping("/{id}")
     public Tripulantes getTripulantesById(@PathVariable Long id) {
-        return TripulantesService.getTripulantesById(id);
+        return tripulantesService.getTripulantesById(id);
     }
 
     @PostMapping
-    public Tripulantes createTripulantes(@RequestBody Tripulantes Tripulantes) {
-        return TripulantesService.createTripulantes(Tripulantes);
+    public Tripulantes createTripulantes(@RequestBody Tripulantes tripulantes) {
+        return tripulantesService.createTripulantes(tripulantes);
     }
 
     @PutMapping("/{id}")
-    public Tripulantes updateTripulantes(@PathVariable Long id, @RequestBody Tripulantes Tripulantes) {
-        return TripulantesService.updateTripulantesName(id, Tripulantes.getNombre());
+    public Tripulantes updateTripulantes(@PathVariable Long id, @RequestBody Tripulantes tripulantes) {
+        return tripulantesService.updateTripulantesName(id, tripulantes.getNombre());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTripulantes(@PathVariable Long id) {
-        TripulantesService.deleteTripulantesById(id);
+        tripulantesService.deleteTripulantesById(id);
         return ResponseEntity.ok().build();
     }
 } 

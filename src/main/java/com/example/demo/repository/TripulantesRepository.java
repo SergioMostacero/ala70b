@@ -12,5 +12,6 @@ public interface TripulantesRepository extends JpaRepository<Tripulantes,Long>{
     boolean existsByNombre(String nombre);
     Optional<Tripulantes> findByEmail(String email);
     Optional<Tripulantes> findByEmailAndContrasena(String email, String contrasena);
+    
 
 }

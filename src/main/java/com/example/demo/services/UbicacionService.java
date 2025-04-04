@@ -9,7 +9,7 @@ import com.example.demo.repository.UbicacionRepository;
 public class UbicacionService {
 
     @Autowired
-    private UbicacionRepository destinoRepository;
+    private UbicacionRepository ubicacionRepository;
 
     
 }
