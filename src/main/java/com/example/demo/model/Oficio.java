@@ -22,7 +22,7 @@ public class Oficio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String oficio;
+    private String nombre;
 
     private String descripcion;
 }

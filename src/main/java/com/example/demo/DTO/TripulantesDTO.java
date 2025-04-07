@@ -2,12 +2,7 @@ package com.example.demo.DTO;
 
 import java.util.List;
 
-import com.example.demo.model.GrupoSanguineo;
-import com.example.demo.model.Medalla;
-import com.example.demo.model.Oficio;
-import com.example.demo.model.Rango;
 import com.example.demo.model.Vuelo;
-
 
 import lombok.Data;
 

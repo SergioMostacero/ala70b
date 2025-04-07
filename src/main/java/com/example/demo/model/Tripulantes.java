@@ -4,9 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,9 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,7 +36,6 @@ public class Tripulantes {
 
     @Column
     private String apellidos;
-
     
     @Column
     private String email;
@@ -52,19 +46,18 @@ public class Tripulantes {
     @Column
     private Date antiguedad;
 
+    @Column
     private String horas_mes;
 
+    @Column
     private String horas_año;
 
+    @Column
     private String horas_totales;
 
     @ManyToOne
     @JoinColumn(name = "grupo_sanguineo_id", nullable = false)
     private GrupoSanguineo grupoSanguineo;
-
-    @ManyToMany
-    @JoinTable(name = "medallas_tripulantes", joinColumns = @JoinColumn(name = "tripulante_id"), inverseJoinColumns = @JoinColumn(name = "medalla_id"))
-    List<Medalla> medallas;
 
     @ManyToOne
     @JoinColumn(name = "rango_id", nullable = false)
@@ -74,10 +67,13 @@ public class Tripulantes {
     @JoinColumn(name = "oficio_id", nullable = false)
     private Oficio oficio;
     
+    @ManyToMany
+    @JoinTable(name = "medallas_tripulantes", joinColumns = @JoinColumn(name = "tripulante_id"), inverseJoinColumns = @JoinColumn(name = "medalla_id"))
+    List<Medalla> medallas = new ArrayList<>(); // Inicializa vacía
 
     @ManyToMany
     @JoinTable(name = "vuelos_tripulantes", joinColumns = @JoinColumn(name = "tripulante_id"), inverseJoinColumns = @JoinColumn(name = "vuelo_id"))
-    List<Vuelo> vuelos;
+    List<Vuelo> vuelos = new ArrayList<>(); // Inicializa vacía;
 
     
 
