@@ -20,9 +20,7 @@ public class TripulantesDTO {
 
     private int antiguedad;
 
-    private String horas_mes;
-
-    private String horas_año;
+    private Boolean permisos;
 
     private String horas_totales;
 

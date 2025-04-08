@@ -47,10 +47,7 @@ public class Tripulantes {
     private Date antiguedad;
 
     @Column
-    private String horas_mes;
-
-    @Column
-    private String horas_año;
+    private Boolean Permisos;
 
     @Column
     private String horas_totales;
