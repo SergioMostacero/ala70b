@@ -7,5 +7,4 @@ import com.example.demo.model.Medalla;
 
 @Repository
 public interface MedallaRepository extends JpaRepository<Medalla, Long> {
-
 }
