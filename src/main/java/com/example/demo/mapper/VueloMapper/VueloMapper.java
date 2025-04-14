@@ -6,8 +6,7 @@ import com.example.demo.DTO.VueloDTO;
 import com.example.demo.model.Vuelo;
 
 public interface VueloMapper {
-
-    List<VueloDTO> toListDTO(List<Vuelo>vuelos);
-
     VueloDTO toDTO(Vuelo vuelo);
+    Vuelo toEntity(VueloDTO dto);
+    List<VueloDTO> toListDTO(List<Vuelo> vuelos);
 }

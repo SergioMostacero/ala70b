@@ -6,7 +6,7 @@ import com.example.demo.DTO.ItinerarioDTO;
 import com.example.demo.model.Itinerario;
 
 public interface ItinerarioMapper {
-    List<ItinerarioDTO> toListDTO(List<Itinerario>itinerario);
-
     ItinerarioDTO toDTO(Itinerario itinerario);
+    Itinerario toEntity(ItinerarioDTO dto);
+    List<ItinerarioDTO> toListDTO(List<Itinerario> itinerarios);
 }
