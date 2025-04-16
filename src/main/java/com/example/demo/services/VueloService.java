@@ -10,10 +10,12 @@ import com.example.demo.mapper.VueloMapper.VueloMapper;
 import com.example.demo.model.Avion;
 import com.example.demo.model.Itinerario;
 import com.example.demo.model.Mision;
+import com.example.demo.model.Tripulantes;
 import com.example.demo.model.Vuelo;
 import com.example.demo.repository.AvionRepository;
 import com.example.demo.repository.ItinerarioRepository;
 import com.example.demo.repository.MisionRepository;
+import com.example.demo.repository.TripulantesRepository;
 import com.example.demo.repository.VueloRepository;
 
 @Service
@@ -32,6 +34,10 @@ public class VueloService {
     private ItinerarioRepository itinerarioRepository;
 
     @Autowired
+    private TripulantesRepository tripulantesRepository;
+
+
+    @Autowired
     private VueloMapper vueloMapper;
 
     public List<VueloDTO> getAllVuelos() {
@@ -47,11 +53,11 @@ public class VueloService {
 
     public VueloDTO createVuelo(VueloDTO dto) {
         Avion avion = avionRepository.findById(dto.getAvionDTO().getId())
-                        .orElseThrow(() -> new RuntimeException("Avión no encontrado"));
+            .orElseThrow(() -> new RuntimeException("Avión no encontrado"));
         Mision mision = misionRepository.findById(dto.getMisionesDTO().getId())
-                        .orElseThrow(() -> new RuntimeException("Misión no encontrada"));
+            .orElseThrow(() -> new RuntimeException("Misión no encontrada"));
         Itinerario itinerario = itinerarioRepository.findById(dto.getItinerarioDTO().getId())
-                        .orElseThrow(() -> new RuntimeException("Itinerario no encontrado"));
+            .orElseThrow(() -> new RuntimeException("Itinerario no encontrado"));
     
         Vuelo vuelo = new Vuelo();
         vuelo.setFecha(dto.getFecha());
@@ -63,10 +69,24 @@ public class VueloService {
         vuelo.setMisiones(mision);
         vuelo.setItinerario(itinerario);
     
-        vueloRepository.save(vuelo);
+        // Guardamos primero el vuelo sin tripulantes
+        vuelo = vueloRepository.save(vuelo);
+    
+        // Asociar tripulantes si vienen en el DTO
+        if (dto.getTripulantes() != null && !dto.getTripulantes().isEmpty()) {
+            for (Tripulantes tripulante : dto.getTripulantes()) {
+                Tripulantes tripulanteBD = tripulantesRepository.findById(tripulante.getId())
+                    .orElseThrow(() -> new RuntimeException("Tripulante no encontrado con ID: " + tripulante.getId()));
+                tripulanteBD.getVuelos().add(vuelo);
+                tripulantesRepository.save(tripulanteBD);
+            }
+        }
     
         return vueloMapper.toDTO(vuelo);
     }
+    
+    
+
     
 
     public VueloDTO updateVuelo(Long id, VueloDTO dto) {
@@ -118,4 +138,13 @@ public class VueloService {
         }
         vueloRepository.deleteById(id);
     }
+
+    public List<VueloDTO> getVuelosByTripulanteId(Long tripulanteId) {
+        Tripulantes tripulante = tripulantesRepository.findById(tripulanteId)
+            .orElseThrow(() -> new RuntimeException("Tripulante no encontrado"));
+    
+        List<Vuelo> vuelos = tripulante.getVuelos();
+        return vueloMapper.toListDTO(vuelos);
+    }
+    
 }

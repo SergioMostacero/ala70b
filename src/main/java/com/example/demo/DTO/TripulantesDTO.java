@@ -13,25 +13,16 @@ public class TripulantesDTO {
     private Long id;
 
     private String nombre;
-
     private String email;
-
     private String contrasena;
-
     private int antiguedad;
-
     private Boolean permisos;
-
     private String horas_totales;
-
+    
     private GrupoSanguineoDTO grupoSanguineoDTO;
-
     List<MedallaDTO> medallasDTO;
-
     private RangoDTO rangoDTO;
-
     private OficioDTO oficioDTO;
-
     List<Vuelo> vuelos;
 
 

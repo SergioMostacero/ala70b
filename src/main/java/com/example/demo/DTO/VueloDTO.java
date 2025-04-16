@@ -2,6 +2,9 @@ package com.example.demo.DTO;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+
+import com.example.demo.model.Tripulantes;
 
 import lombok.Data;
 
@@ -22,4 +25,5 @@ public class VueloDTO {
     private AvionDTO avionDTO;
     private MisionDTO misionesDTO;
     private ItinerarioDTO itinerarioDTO;
+    List <Tripulantes> tripulantes;
 }
