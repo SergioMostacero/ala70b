@@ -46,29 +46,28 @@ public class VueloService {
     }
 
     public VueloDTO createVuelo(VueloDTO dto) {
-        // Convierte el DTO a entidad parcial
-        Vuelo vuelo = vueloMapper.toEntity(dto);
-
-        if (dto.getAvionDTO() != null && dto.getAvionDTO().getId() != null) {
-            Avion avion = avionRepository.findById(dto.getAvionDTO().getId())
-                .orElseThrow(() -> new RuntimeException("Avión no encontrado"));
-            vuelo.setAvion(avion);
-        }
-
-        if (dto.getMisionesDTO() != null && dto.getMisionesDTO().getId() != null) {
-            Mision mision = misionRepository.findById(dto.getMisionesDTO().getId())
-                .orElseThrow(() -> new RuntimeException("Misión no encontrada"));
-            vuelo.setMisiones(mision);
-        }
-
-        if (dto.getItinerarioDTO() != null && dto.getItinerarioDTO().getId() != null) {
-            Itinerario itinerario = itinerarioRepository.findById(dto.getItinerarioDTO().getId())
-                .orElseThrow(() -> new RuntimeException("Itinerario no encontrado"));
-            vuelo.setItinerario(itinerario);
-        }
-        vuelo = vueloRepository.save(vuelo);
+        Avion avion = avionRepository.findById(dto.getAvionDTO().getId())
+                        .orElseThrow(() -> new RuntimeException("Avión no encontrado"));
+        Mision mision = misionRepository.findById(dto.getMisionesDTO().getId())
+                        .orElseThrow(() -> new RuntimeException("Misión no encontrada"));
+        Itinerario itinerario = itinerarioRepository.findById(dto.getItinerarioDTO().getId())
+                        .orElseThrow(() -> new RuntimeException("Itinerario no encontrado"));
+    
+        Vuelo vuelo = new Vuelo();
+        vuelo.setFecha(dto.getFecha());
+        vuelo.setHora_salida(dto.getHora_salida());
+        vuelo.setHora_llegada(dto.getHora_llegada());
+        vuelo.setAnticipo(dto.getAnticipo());
+        vuelo.setGasolina(dto.getGasolina());
+        vuelo.setAvion(avion);
+        vuelo.setMisiones(mision);
+        vuelo.setItinerario(itinerario);
+    
+        vueloRepository.save(vuelo);
+    
         return vueloMapper.toDTO(vuelo);
     }
+    
 
     public VueloDTO updateVuelo(Long id, VueloDTO dto) {
         Vuelo vuelo = vueloRepository.findById(id)

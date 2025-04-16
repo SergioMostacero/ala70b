@@ -1,6 +1,7 @@
 package com.example.demo.DTO;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import lombok.Data;
 
@@ -12,9 +13,9 @@ import lombok.Data;
 public class VueloDTO {
     private Long id;
 
-    private LocalDateTime fecha;
-    private String hora_salida;
-    private String hora_llegada;
+    private LocalDate fecha;
+    private LocalTime hora_salida;
+    private LocalTime hora_llegada;
     private String anticipo;
     private String gasolina;
 

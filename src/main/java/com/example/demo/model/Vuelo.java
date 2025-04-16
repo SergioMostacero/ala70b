@@ -1,13 +1,9 @@
 package com.example.demo.model;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,9 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -38,19 +32,20 @@ public class Vuelo {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDateTime fecha;
+    private LocalDate fecha;
 
 
-    @NotBlank(message = "Hora de salida obligatoria")
-    private String hora_salida;
+    @Column(nullable = false)
+    private LocalTime hora_salida;
 
-    @NotBlank(message = "Hora de llegada obligatorio")
-    private String hora_llegada;
+    @Column(nullable = false)
+    private LocalTime hora_llegada;
 
-    @NotBlank(message = "anticipo obligatorio")
+
+    @Column(nullable = false)
     private String anticipo;
 
-    @NotBlank(message = "Gasolina obligatorio")
+    @Column(nullable = false)
     private String gasolina;
 
 
