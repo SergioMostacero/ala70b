@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.DTO.TripulantesDTO;
 import com.example.demo.DTO.VueloDTO;
 import com.example.demo.mapper.VueloMapper.VueloMapper;
 import com.example.demo.model.Avion;
@@ -54,7 +55,7 @@ public class VueloService {
     public VueloDTO createVuelo(VueloDTO dto) {
         Avion avion = avionRepository.findById(dto.getAvionDTO().getId())
             .orElseThrow(() -> new RuntimeException("Avión no encontrado"));
-        Mision mision = misionRepository.findById(dto.getMisionesDTO().getId())
+        Mision mision = misionRepository.findById(dto.getMisionDTO().getId())
             .orElseThrow(() -> new RuntimeException("Misión no encontrada"));
         Itinerario itinerario = itinerarioRepository.findById(dto.getItinerarioDTO().getId())
             .orElseThrow(() -> new RuntimeException("Itinerario no encontrado"));
@@ -73,15 +74,15 @@ public class VueloService {
         vuelo = vueloRepository.save(vuelo);
     
         // Asociar tripulantes si vienen en el DTO
-        if (dto.getTripulantes() != null && !dto.getTripulantes().isEmpty()) {
-            for (Tripulantes tripulante : dto.getTripulantes()) {
-                Tripulantes tripulanteBD = tripulantesRepository.findById(tripulante.getId())
-                    .orElseThrow(() -> new RuntimeException("Tripulante no encontrado con ID: " + tripulante.getId()));
-                tripulanteBD.getVuelos().add(vuelo);
-                tripulantesRepository.save(tripulanteBD);
+        if (dto.getTripulantesDTO() != null && !dto.getTripulantesDTO().isEmpty()) {
+            for (TripulantesDTO tripulanteDTO : dto.getTripulantesDTO()) {
+                Tripulantes tripulante = tripulantesRepository.findById(tripulanteDTO.getId())
+                    .orElseThrow(() -> new RuntimeException("Tripulante no encontrado"));
+                tripulante.getVuelos().add(vuelo);
+                tripulantesRepository.save(tripulante);
             }
         }
-    
+        
         return vueloMapper.toDTO(vuelo);
     }
     
@@ -110,8 +111,8 @@ public class VueloService {
         }
 
         // Mision
-        if (dto.getMisionesDTO() != null && dto.getMisionesDTO().getId() != null) {
-            Mision mision = misionRepository.findById(dto.getMisionesDTO().getId())
+        if (dto.getMisionDTO() != null && dto.getMisionDTO().getId() != null) {
+            Mision mision = misionRepository.findById(dto.getMisionDTO().getId())
                 .orElseThrow(() -> new RuntimeException("Misión no encontrada"));
             vuelo.setMisiones(mision);
         } else {

@@ -5,8 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,15 +18,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "vuelos")
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Vuelo {
@@ -53,20 +48,17 @@ public class Vuelo {
 
     @ManyToOne
     @JoinColumn(name = "avion_id")
-    @JsonManagedReference
     private Avion avion;
 
     @ManyToOne
     @JoinColumn(name = "mision_id")
-    @JsonManagedReference
     private Mision misiones;
 
     @ManyToOne
     @JoinColumn(name = "itinerario_id")
-    @JsonManagedReference
     private Itinerario itinerario;
 
     @ManyToMany(mappedBy = "vuelos")
-    @JsonBackReference
+    @JsonIgnore 
     private List<Tripulantes> tripulantes = new ArrayList<>();
 }

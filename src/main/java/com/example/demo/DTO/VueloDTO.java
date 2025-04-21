@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import com.example.demo.model.Tripulantes;
-
 import lombok.Data;
 
 /**
@@ -23,7 +21,7 @@ public class VueloDTO {
     private String gasolina;
 
     private AvionDTO avionDTO;
-    private MisionDTO misionesDTO;
+    private MisionDTO misionDTO;
     private ItinerarioDTO itinerarioDTO;
-    List <Tripulantes> tripulantes;
+    private List<TripulantesDTO> tripulantesDTO;
 }

@@ -52,7 +52,7 @@ public class VueloMapperImpl implements VueloMapper {
         // Mision
         if (vuelo.getMisiones() != null) {
             MisionDTO misionDTO = misionMapper.toDTO(vuelo.getMisiones());
-            dto.setMisionesDTO(misionDTO);
+            dto.setMisionDTO(misionDTO);
         }
 
         // Itinerario
@@ -81,22 +81,24 @@ public class VueloMapperImpl implements VueloMapper {
 
         // Avion: convertimos AvionDTO -> Avion (solo si no es null)
         if (dto.getAvionDTO() != null) {
-            Avion avionEntity = avionMapper.toEntity(dto.getAvionDTO());
-            vuelo.setAvion(avionEntity);
+            Avion avion = new Avion();
+            avion.setId(dto.getAvionDTO().getId());
+            vuelo.setAvion(avion);
         }
-
-        // Mision
-        if (dto.getMisionesDTO() != null) {
-            Mision misionEntity = misionMapper.toEntity(dto.getMisionesDTO());
-            vuelo.setMisiones(misionEntity);
+        
+        // Repetir para misionDTO e itinerarioDTO
+        if (dto.getMisionDTO() != null) {
+            Mision mision = new Mision();
+            mision.setId(dto.getMisionDTO().getId());
+            vuelo.setMisiones(mision);
         }
-
-        // Itinerario
+        
         if (dto.getItinerarioDTO() != null) {
-            Itinerario itinerarioEntity = itinerarioMapper.toEntity(dto.getItinerarioDTO());
-            vuelo.setItinerario(itinerarioEntity);
+            Itinerario itinerario = new Itinerario();
+            itinerario.setId(dto.getItinerarioDTO().getId());
+            vuelo.setItinerario(itinerario);
         }
-
+        
         return vuelo;
     }
 
