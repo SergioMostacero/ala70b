@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Tripulantes;
 import com.example.demo.services.TripulantesService;
+import com.example.demo.repository.TripulantesRepository;
 
 @RestController
 @RequestMapping("/api/tripulantes")
@@ -25,6 +26,8 @@ public class TripulantesController {
 
     @Autowired
     private TripulantesService tripulantesService;
+    @Autowired
+    private TripulantesRepository tripulanteRepository;
 
     @GetMapping
     public List<Tripulantes> getAllTripulantess() {
@@ -46,6 +49,25 @@ public class TripulantesController {
     @GetMapping("/{id}")
     public Tripulantes getTripulantesById(@PathVariable Long id) {
         return tripulantesService.getTripulantesById(id);
+    }
+    @GetMapping("/pilotos")
+    public List<Tripulantes> getPilotos() {
+        return tripulanteRepository.findByOficioNombreIgnoreCase("Piloto");
+    }
+    
+    @GetMapping("/copilotos")
+    public List<Tripulantes> getCopilotos() {
+        return tripulanteRepository.findByOficioNombreIgnoreCase("Copiloto");
+    }
+    
+    @GetMapping("/mecanicos")
+    public List<Tripulantes> getMecanicos() {
+        return tripulanteRepository.findByOficioNombreIgnoreCase("Mecánico de Aeronaves");
+    }
+    
+    @GetMapping("/tecnicoscom")
+    public List<Tripulantes> getTecnicosCom() {
+        return tripulanteRepository.findByOficioNombreIgnoreCase("Técnico de Comunicaciones y Navegación");
     }
 
     @PostMapping
