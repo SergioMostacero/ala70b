@@ -50,7 +50,7 @@ public class Tripulantes {
     private Boolean permisos;
 
     @Column
-    private String horas_totales;
+    private Integer horas_totales;
 
     @ManyToOne
     @JoinColumn(name = "grupo_sanguineo_id", nullable = false)
@@ -66,11 +66,11 @@ public class Tripulantes {
     
     @ManyToMany
     @JoinTable(name = "medallas_tripulantes", joinColumns = @JoinColumn(name = "tripulante_id"), inverseJoinColumns = @JoinColumn(name = "medalla_id"))
-    List<Medalla> medallas = new ArrayList<>(); // Inicializa vacía
+    List<Medalla> medallas = new ArrayList<>(); 
 
     @ManyToMany
     @JoinTable(name = "vuelos_tripulantes", joinColumns = @JoinColumn(name = "tripulante_id"), inverseJoinColumns = @JoinColumn(name = "vuelo_id"))
-    List<Vuelo> vuelos = new ArrayList<>(); // Inicializa vacía;
+    List<Vuelo> vuelos = new ArrayList<>();
 
     
 

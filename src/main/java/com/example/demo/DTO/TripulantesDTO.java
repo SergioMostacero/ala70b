@@ -1,6 +1,6 @@
 package com.example.demo.DTO;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.List;
 
 import lombok.Data;
@@ -10,12 +10,12 @@ import lombok.Data;
 public class TripulantesDTO {
     private Long id;
     private String nombre;
-    private String apellidos; // ¡Faltaba este campo!
+    private String apellidos;
     private String email;
     private String contrasena;
-    private LocalDate antiguedad; // Cambiar de int a LocalDate
+    private Date antiguedad; 
     private Boolean permisos;
-    private String horas_totales;
+    private Integer horas_totales;
     
     private GrupoSanguineoDTO grupoSanguineoDTO;
     private List<MedallaDTO> medallasDTO;

@@ -32,7 +32,7 @@ public class TripulantesMapperImpl implements TripulantesMapper {
         dto.setApellidos(tripulante.getApellidos());
         dto.setEmail(tripulante.getEmail());
         dto.setContrasena(tripulante.getContrasena());
-        dto.setAntiguedad(tripulante.getAntiguedad().toLocalDate());
+        dto.setAntiguedad(tripulante.getAntiguedad());
         dto.setPermisos(tripulante.getPermisos());
         dto.setHoras_totales(tripulante.getHoras_totales());
         
