@@ -18,9 +18,9 @@ public class TripulantesDTO {
     private Integer horas_totales;
     
     private GrupoSanguineoDTO grupoSanguineoDTO;
-    private List<MedallaDTO> medallasDTO;
     private RangoDTO rangoDTO;
     private OficioDTO oficioDTO;
+    private List<MedallaDTO> medallasDTO;
     private List<VueloDTO> vuelosDTO;
 
 
