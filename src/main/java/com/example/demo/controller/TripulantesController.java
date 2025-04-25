@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.DTO.TripulantesDTO;
+import com.example.demo.DTO.VueloDTO;
 import com.example.demo.model.Tripulantes;
 import com.example.demo.services.TripulantesService;
 import com.example.demo.repository.TripulantesRepository;
@@ -71,8 +74,9 @@ public class TripulantesController {
     }
 
     @PostMapping
-    public Tripulantes createTripulantes(@RequestBody Tripulantes tripulantes) {
-        return tripulantesService.createTripulantes(tripulantes);
+    public ResponseEntity<TripulantesDTO> createTripulante(@RequestBody TripulantesDTO tripulantesDTO) {
+        TripulantesDTO created = tripulantesService.createTripulantes(tripulantesDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
