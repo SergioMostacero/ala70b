@@ -42,4 +42,9 @@ public class UbicacionController {
         ubicacionService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/itinerario/{itinerarioId}")
+    public List<Ubicacion> obtenerUbicacionesPorItinerario(@PathVariable Long itinerarioId) {
+        return ubicacionService.obtenerUbicacionesPorItinerario(itinerarioId);
+    }
 }

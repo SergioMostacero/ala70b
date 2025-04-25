@@ -36,4 +36,8 @@ public class UbicacionService {
     public void delete(int id) {
         ubicacionRepository.deleteById(id);
     }
+
+    public List<Ubicacion> obtenerUbicacionesPorItinerario(Long itinerarioId) {
+        return ubicacionRepository.findByItinerarioUbicacionesItinerarioId(itinerarioId);
+    }
 }
