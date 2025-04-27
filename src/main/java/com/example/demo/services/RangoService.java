@@ -1,61 +1,65 @@
 package com.example.demo.services;
 
 import com.example.demo.DTO.RangoDTO;
+import com.example.demo.mapper.RangoMapper.RangoMapper;
 import com.example.demo.model.Rango;
 import com.example.demo.repository.RangoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class RangoService {
 
     @Autowired
-    private RangoRepository rangoRepository;
+    private RangoRepository repo;
 
-    public List<RangoDTO> getAllRangos() {
-        return rangoRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    @Autowired
+    private RangoMapper mapper;
+
+    public List<RangoDTO> getAll() {
+        List<Rango> entidades = repo.findAll();
+        return mapper.toListDTO(entidades);
     }
 
-    public RangoDTO getRangoById(Long id) {
-        return rangoRepository.findById(id)
-                .map(this::convertToDTO)
-                .orElseThrow(() -> new RuntimeException("Rango no encontrado"));
+    public RangoDTO getById(Long id) {
+        Rango entidad = repo.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Rango no encontrado con id: " + id
+            ));
+        return mapper.toDTO(entidad);
     }
 
-    public RangoDTO createRango(RangoDTO rangoDTO) {
-        Rango rango = convertToEntity(rangoDTO);
-        return convertToDTO(rangoRepository.save(rango));
+    public RangoDTO create(RangoDTO dto) {
+        Rango nueva = mapper.toEntity(dto);
+        Rango guardada = repo.save(nueva);
+        return mapper.toDTO(guardada);
     }
 
-    public RangoDTO updateRango(Long id, RangoDTO rangoDTO) {
-        Rango rango = rangoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rango no encontrado"));
-        rango.setNombre(rangoDTO.getNombre());
-        rango.setDescripcion(rangoDTO.getDescripcion());
-        return convertToDTO(rangoRepository.save(rango));
+    public RangoDTO update(Long id, RangoDTO dto) {
+        if (!repo.existsById(id)) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Rango no encontrado con id: " + id
+            );
+        }
+        dto.setId(id);
+        Rango toSave = mapper.toEntity(dto);
+        Rango actualizada = repo.save(toSave);
+        return mapper.toDTO(actualizada);
     }
 
-    public void deleteRango(Long id) {
-        rangoRepository.deleteById(id);
-    }
-
-    private RangoDTO convertToDTO(Rango rango) {
-        RangoDTO dto = new RangoDTO();
-        dto.setId(rango.getId());
-        dto.setNombre(rango.getNombre());
-        dto.setDescripcion(rango.getDescripcion());
-        return dto;
-    }
-
-    private Rango convertToEntity(RangoDTO dto) {
-        Rango rango = new Rango();
-        rango.setNombre(dto.getNombre());
-        rango.setDescripcion(dto.getDescripcion());
-        return rango;
+    public void delete(Long id) {
+        if (!repo.existsById(id)) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Rango no encontrado con id: " + id
+            );
+        }
+        repo.deleteById(id);
     }
 }

@@ -1,14 +1,18 @@
 package com.example.demo.services;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.example.demo.DTO.MedallaDTO;
+import com.example.demo.mapper.MedallaMapper.MedallaMapper;
 import com.example.demo.model.Medalla;
 import com.example.demo.model.Tripulantes;
 import com.example.demo.repository.MedallaRepository;
 import com.example.demo.repository.TripulantesRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 public class MedallaService {
@@ -19,19 +23,26 @@ public class MedallaService {
     @Autowired
     private TripulantesRepository tripulantesRepository;
 
-    public List<Medalla> getAllMedallas() {
-        return medallaRepository.findAll();
+    @Autowired
+    private MedallaMapper medallaMapper;
+
+    public List<MedallaDTO> getAllMedallas() {
+        List<Medalla> medallas = medallaRepository.findAll();
+        return medallaMapper.toListDTO(medallas);
     }
 
-    public List<Medalla> getMedallasByTripulante(Long tripulanteId) {
+    public List<MedallaDTO> getMedallasByTripulante(Long tripulanteId) {
         Tripulantes tripulante = tripulantesRepository.findById(tripulanteId)
-                .orElseThrow(() -> new RuntimeException("Tripulante no encontrado con ID: " + tripulanteId));
-
-        return tripulante.getMedallas();
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Tripulante no encontrado con ID: " + tripulanteId
+            ));
+        return medallaMapper.toListDTO(tripulante.getMedallas());
     }
 
-
-    public Medalla createMedalla(Medalla medalla) {
-        return medallaRepository.save(medalla);
+    public MedallaDTO createMedalla(MedallaDTO dto) {
+        Medalla entidad = medallaMapper.toEntity(dto);
+        Medalla guardada = medallaRepository.save(entidad);
+        return medallaMapper.toDTO(guardada);
     }
 }

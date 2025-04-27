@@ -3,7 +3,9 @@ package com.example.demo.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.demo.DTO.TripulantesDTO;
 import com.example.demo.DTO.VueloDTO;
@@ -41,14 +43,17 @@ public class VueloService {
     @Autowired
     private VueloMapper vueloMapper;
 
-    public List<VueloDTO> getAllVuelos() {
+     public List<VueloDTO> getAll() {
         List<Vuelo> vuelos = vueloRepository.findAll();
         return vueloMapper.toListDTO(vuelos);
     }
 
-    public VueloDTO getVueloById(Long id) {
+    public VueloDTO getById(Long id) {
         Vuelo vuelo = vueloRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Vuelo no encontrado"));
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Vuelo no encontrado con id: " + id
+            ));
         return vueloMapper.toDTO(vuelo);
     }
 
@@ -132,20 +137,23 @@ public class VueloService {
         return vueloMapper.toDTO(vuelo);
     }
 
-    // 5) Eliminar un vuelo
-    public void deleteVuelo(Long id) {
+    public void delete(Long id) {
         if (!vueloRepository.existsById(id)) {
-            throw new RuntimeException("Vuelo no encontrado");
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Vuelo no encontrado con id: " + id
+            );
         }
         vueloRepository.deleteById(id);
     }
 
-    public List<VueloDTO> getVuelosByTripulanteId(Long tripulanteId) {
+    public List<VueloDTO> getByTripulanteId(Long tripulanteId) {
         Tripulantes tripulante = tripulantesRepository.findById(tripulanteId)
-            .orElseThrow(() -> new RuntimeException("Tripulante no encontrado"));
-    
-        List<Vuelo> vuelos = tripulante.getVuelos();
-        return vueloMapper.toListDTO(vuelos);
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Tripulante no encontrado con id: " + tripulanteId
+            ));
+        return vueloMapper.toListDTO(tripulante.getVuelos());
     }
     
 }

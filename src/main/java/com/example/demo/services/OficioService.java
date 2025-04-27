@@ -1,62 +1,68 @@
 package com.example.demo.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.demo.DTO.OficioDTO;
+import com.example.demo.mapper.OficioMapper.OficioMapper;
 import com.example.demo.model.Oficio;
 import com.example.demo.repository.OficioRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 public class OficioService {
 
     @Autowired
-    private OficioRepository OficioRepository;
+    private OficioRepository repo;
 
-    public List<OficioDTO> getAllOficios() {
-        return OficioRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    @Autowired
+    private OficioMapper mapper;
+
+    public List<OficioDTO> getAll() {
+        List<Oficio> entidades = repo.findAll();
+        return mapper.toListDTO(entidades);
     }
 
-    public OficioDTO getOficioById(Long id) {
-        return OficioRepository.findById(id)
-                .map(this::convertToDTO)
-                .orElseThrow(() -> new RuntimeException("Oficio no encontrado"));
+    public OficioDTO getById(Long id) {
+        Oficio entidad = repo.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Oficio no encontrado con id: " + id
+            ));
+        return mapper.toDTO(entidad);
     }
 
-    public OficioDTO createOficio(OficioDTO oficioDTO) {
-        Oficio Oficio = convertToEntity(oficioDTO);
-        return convertToDTO(OficioRepository.save(Oficio));
+    public OficioDTO create(OficioDTO dto) {
+        // DTO → entidad
+        Oficio nueva = mapper.toEntity(dto);
+        // guarda y devuelve DTO con ID asignado
+        Oficio guardada = repo.save(nueva);
+        return mapper.toDTO(guardada);
     }
 
-    public OficioDTO updateOficio(Long id, OficioDTO oficioDTO) {
-        Oficio Oficio = OficioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Oficio no encontrado"));
-        Oficio.setNombre(oficioDTO.getNombre());
-        Oficio.setDescripcion(oficioDTO.getDescripcion());
-        return convertToDTO(OficioRepository.save(Oficio));
+    public OficioDTO update(Long id, OficioDTO dto) {
+        if (!repo.existsById(id)) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Oficio no encontrado con id: " + id
+            );
+        }
+        dto.setId(id);
+        Oficio toSave = mapper.toEntity(dto);
+        Oficio actualizada = repo.save(toSave);
+        return mapper.toDTO(actualizada);
     }
 
-    public void deleteOficio(Long id) {
-        OficioRepository.deleteById(id);
-    }
-
-    private OficioDTO convertToDTO(Oficio Oficio) {
-        OficioDTO dto = new OficioDTO();
-        dto.setId(Oficio.getId());
-        dto.setNombre(Oficio.getNombre());
-        dto.setDescripcion(Oficio.getDescripcion());
-        return dto;
-    }
-
-    private Oficio convertToEntity(OficioDTO dto) {
-        Oficio Oficio = new Oficio();
-        Oficio.setNombre(dto.getNombre());
-        Oficio.setDescripcion(dto.getDescripcion());
-        return Oficio;
+    public void delete(Long id) {
+        if (!repo.existsById(id)) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Oficio no encontrado con id: " + id
+            );
+        }
+        repo.deleteById(id);
     }
 }

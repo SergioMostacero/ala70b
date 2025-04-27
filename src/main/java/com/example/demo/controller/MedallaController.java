@@ -1,18 +1,15 @@
 package com.example.demo.controller;
 
-import java.util.List;
+import com.example.demo.DTO.MedallaDTO;
+import com.example.demo.services.MedallaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.example.demo.model.Medalla;
-import com.example.demo.services.MedallaService;
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/medallas")
@@ -23,17 +20,26 @@ public class MedallaController {
     private MedallaService medallaService;
 
     @GetMapping
-    public List<Medalla> getAllMedallas() {
-        return medallaService.getAllMedallas();
+    public ResponseEntity<List<MedallaDTO>> getAllMedallas() {
+        List<MedallaDTO> dtos = medallaService.getAllMedallas();
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/tripulante/{tripulanteId}")
-    public List<Medalla> getMedallasByTripulante(@PathVariable("tripulanteId") Long tripulanteId) {
-        return medallaService.getMedallasByTripulante(tripulanteId);
+    public ResponseEntity<List<MedallaDTO>> getMedallasByTripulante(
+            @PathVariable Long tripulanteId
+    ) {
+        List<MedallaDTO> dtos = medallaService.getMedallasByTripulante(tripulanteId);
+        return ResponseEntity.ok(dtos);
     }
 
     @PostMapping
-    public Medalla createMedalla(@RequestBody Medalla medalla) {
-        return medallaService.createMedalla(medalla);
+    public ResponseEntity<MedallaDTO> createMedalla(@RequestBody MedallaDTO dto) {
+        MedallaDTO created = medallaService.createMedalla(dto);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(created);
     }
 }

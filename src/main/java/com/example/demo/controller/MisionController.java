@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Mision;
+import com.example.demo.DTO.MisionDTO;
 import com.example.demo.services.MisionService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -17,24 +20,34 @@ public class MisionController {
     private MisionService misionService;
 
     @GetMapping
-    public ResponseEntity<List<Mision>> getAllMisiones() {
-        return ResponseEntity.ok(misionService.getAll());
+    public ResponseEntity<List<MisionDTO>> getAllMisiones() {
+        List<MisionDTO> dtos = misionService.getAll();
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Mision> getMisionById(@PathVariable Long id) {
-        return ResponseEntity.ok(misionService.getById(id));
+    public ResponseEntity<MisionDTO> getMisionById(@PathVariable Long id) {
+        MisionDTO dto = misionService.getById(id);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<Mision> createMision(@RequestBody Mision mision) {
-        return ResponseEntity.ok(misionService.create(mision));
+    public ResponseEntity<MisionDTO> createMision(@RequestBody MisionDTO dto) {
+        MisionDTO created = misionService.create(dto);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Mision> updateMision(@PathVariable Long id, @RequestBody Mision mision) {
-        mision.setId(id);
-        return ResponseEntity.ok(misionService.update(mision));
+    public ResponseEntity<MisionDTO> updateMision(
+            @PathVariable Long id,
+            @RequestBody MisionDTO dto
+    ) {
+        MisionDTO updated = misionService.update(id, dto);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")

@@ -1,9 +1,14 @@
 package com.example.demo.services;
 
+import com.example.demo.DTO.ItinerarioDTO;
+import com.example.demo.mapper.ItinerarioMapper.ItinerarioMapper;
 import com.example.demo.model.Itinerario;
 import com.example.demo.repository.ItinerarioRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -11,29 +16,51 @@ import java.util.List;
 public class ItinerarioService {
 
     @Autowired
-    private ItinerarioRepository itinerarioRepository;
+    private ItinerarioRepository repo;
 
-    public List<Itinerario> getAll() {
-        return itinerarioRepository.findAll();
+    @Autowired
+    private ItinerarioMapper mapper;
+
+    public List<ItinerarioDTO> getAll() {
+        List<Itinerario> entidades = repo.findAll();
+        return mapper.toListDTO(entidades);
     }
 
-    public Itinerario getById(Long id) {
-        return itinerarioRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Itinerario no encontrado con id: " + id));
+    public ItinerarioDTO getById(Long id) {
+        Itinerario entidad = repo.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Itinerario no encontrado con id: " + id
+            ));
+        return mapper.toDTO(entidad);
     }
 
-    public Itinerario create(Itinerario itinerario) {
-        return itinerarioRepository.save(itinerario);
+    public ItinerarioDTO create(ItinerarioDTO dto) {
+        Itinerario nueva = mapper.toEntity(dto);
+        Itinerario guardada = repo.save(nueva);
+        return mapper.toDTO(guardada);
     }
 
-    public Itinerario update(Itinerario itinerario) {
-        if (!itinerarioRepository.existsById(itinerario.getId())) {
-            throw new RuntimeException("Itinerario no encontrado con id: " + itinerario.getId());
+    public ItinerarioDTO update(Long id, ItinerarioDTO dto) {
+        if (!repo.existsById(id)) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Itinerario no encontrado con id: " + id
+            );
         }
-        return itinerarioRepository.save(itinerario);
+        dto.setId(id);
+        Itinerario toSave = mapper.toEntity(dto);
+        Itinerario actualizado = repo.save(toSave);
+        return mapper.toDTO(actualizado);
     }
 
     public void delete(Long id) {
-        itinerarioRepository.deleteById(id);
+        if (!repo.existsById(id)) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Itinerario no encontrado con id: " + id
+            );
+        }
+        repo.deleteById(id);
     }
 }

@@ -1,11 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Ubicacion;
+import com.example.demo.DTO.UbicacionDTO;
 import com.example.demo.services.UbicacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -17,24 +19,34 @@ public class UbicacionController {
     private UbicacionService ubicacionService;
 
     @GetMapping
-    public ResponseEntity<List<Ubicacion>> getAllUbicaciones() {
-        return ResponseEntity.ok(ubicacionService.getAll());
+    public ResponseEntity<List<UbicacionDTO>> getAllUbicaciones() {
+        List<UbicacionDTO> dtos = ubicacionService.getAll();
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ubicacion> getUbicacionById(@PathVariable int id) {
-        return ResponseEntity.ok(ubicacionService.getById(id));
+    public ResponseEntity<UbicacionDTO> getUbicacionById(@PathVariable int id) {
+        UbicacionDTO dto = ubicacionService.getById(id);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<Ubicacion> createUbicacion(@RequestBody Ubicacion ubicacion) {
-        return ResponseEntity.ok(ubicacionService.create(ubicacion));
+    public ResponseEntity<UbicacionDTO> createUbicacion(@RequestBody UbicacionDTO dto) {
+        UbicacionDTO created = ubicacionService.create(dto);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Ubicacion> updateUbicacion(@PathVariable int id, @RequestBody Ubicacion ubicacion) {
-        ubicacion.setId(id);
-        return ResponseEntity.ok(ubicacionService.update(ubicacion));
+    public ResponseEntity<UbicacionDTO> updateUbicacion(
+            @PathVariable int id,
+            @RequestBody UbicacionDTO dto
+    ) {
+        UbicacionDTO updated = ubicacionService.update(id, dto);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
@@ -44,7 +56,10 @@ public class UbicacionController {
     }
 
     @GetMapping("/itinerario/{itinerarioId}")
-    public List<Ubicacion> obtenerUbicacionesPorItinerario(@PathVariable Long itinerarioId) {
-        return ubicacionService.obtenerUbicacionesPorItinerario(itinerarioId);
+    public ResponseEntity<List<UbicacionDTO>> getByItinerario(
+            @PathVariable Long itinerarioId
+    ) {
+        List<UbicacionDTO> dtos = ubicacionService.getByItinerario(itinerarioId);
+        return ResponseEntity.ok(dtos);
     }
 }

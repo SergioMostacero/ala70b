@@ -6,12 +6,14 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.DTO.AvionDTO;
 import com.example.demo.DTO.TripulantesDTO;
 import com.example.demo.mapper.GrupoSanguineoMapper.GrupoSanguineoMapper;
 import com.example.demo.mapper.MedallaMapper.MedallaMapper;
 import com.example.demo.mapper.OficioMapper.OficioMapper;
 import com.example.demo.mapper.RangoMapper.RangoMapper;
 import com.example.demo.mapper.VueloMapper.VueloMapper;
+import com.example.demo.model.Avion;
 import com.example.demo.model.Tripulantes;
 
 @Component
@@ -55,6 +57,17 @@ public class TripulantesMapperImpl implements TripulantesMapper {
         );
 
         return dto;
+    }
+
+    @Override
+    public Tripulantes toEntity(TripulantesDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+        Tripulantes tripulantes = new Tripulantes();
+        tripulantes.setId(dto.getId());     
+        tripulantes.setNombre(dto.getNombre());
+        return tripulantes;
     }
 
     @Override

@@ -29,16 +29,15 @@ public class VueloController {
 
     @GetMapping
     public ResponseEntity<List<VueloDTO>> getAllVuelos() {
-        List<VueloDTO> vuelos = vueloService.getAllVuelos();
+        List<VueloDTO> vuelos = vueloService.getAll();
         return ResponseEntity.ok(vuelos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<VueloDTO> getVueloById(@PathVariable Long id) {
-        VueloDTO vueloDTO = vueloService.getVueloById(id);
-        return ResponseEntity.ok(vueloDTO);
+        VueloDTO dto = vueloService.getById(id);
+        return ResponseEntity.ok(dto);
     }
-
     @PostMapping
     public ResponseEntity<VueloDTO> createVuelo(@RequestBody VueloDTO vueloDto) {
         VueloDTO created = vueloService.createVuelo(vueloDto);
@@ -54,13 +53,16 @@ public class VueloController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVuelo(@PathVariable Long id) {
-        vueloService.deleteVuelo(id);
-        return ResponseEntity.ok().build();
+        vueloService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/user")
-    public List<VueloDTO> getVuelosByTripulante(@RequestParam Long tripulanteId) {
-        return vueloService.getVuelosByTripulanteId(tripulanteId);
+    public ResponseEntity<List<VueloDTO>> getVuelosByTripulante(
+            @RequestParam("tripulanteId") Long tripulanteId
+    ) {
+        List<VueloDTO> vuelos = vueloService.getByTripulanteId(tripulanteId);
+        return ResponseEntity.ok(vuelos);
     }
 
 }

@@ -1,11 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Itinerario;
+import com.example.demo.DTO.ItinerarioDTO;
 import com.example.demo.services.ItinerarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -17,24 +19,35 @@ public class ItinerarioController {
     private ItinerarioService itinerarioService;
 
     @GetMapping
-    public ResponseEntity<List<Itinerario>> getAllItinerarios() {
-        return ResponseEntity.ok(itinerarioService.getAll());
+    public ResponseEntity<List<ItinerarioDTO>> getAllItinerarios() {
+        List<ItinerarioDTO> dtos = itinerarioService.getAll();
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Itinerario> getItinerarioById(@PathVariable Long id) {
-        return ResponseEntity.ok(itinerarioService.getById(id));
+    public ResponseEntity<ItinerarioDTO> getItinerarioById(@PathVariable Long id) {
+        ItinerarioDTO dto = itinerarioService.getById(id);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<Itinerario> createItinerario(@RequestBody Itinerario itinerario) {
-        return ResponseEntity.ok(itinerarioService.create(itinerario));
+    public ResponseEntity<ItinerarioDTO> createItinerario(@RequestBody ItinerarioDTO dto) {
+        ItinerarioDTO created = itinerarioService.create(dto);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Itinerario> updateItinerario(@PathVariable Long id, @RequestBody Itinerario itinerario) {
-        itinerario.setId(id);
-        return ResponseEntity.ok(itinerarioService.update(itinerario));
+    public ResponseEntity<ItinerarioDTO> updateItinerario(
+            @PathVariable Long id,
+            @RequestBody ItinerarioDTO dto
+    ) {
+        dto.setId(id);
+        ItinerarioDTO updated = itinerarioService.update(id, dto);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")

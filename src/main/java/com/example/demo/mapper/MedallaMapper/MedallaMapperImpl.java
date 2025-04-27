@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component; // Añadir import
 
+import com.example.demo.DTO.AvionDTO;
 import com.example.demo.DTO.MedallaDTO;
+import com.example.demo.model.Avion;
 import com.example.demo.model.Medalla;
 
 @Component
@@ -18,6 +20,17 @@ public class MedallaMapperImpl implements MedallaMapper {
         medallaDTO.setNombre(medalla.getNombre());
         return medallaDTO;
     }
+
+    @Override
+        public Medalla toEntity(MedallaDTO dto) {
+            if (dto == null) {
+                return null;
+            }
+            Medalla medalla = new Medalla();
+            medalla.setId(dto.getId());     
+            medalla.setNombre(dto.getNombre());
+            return medalla;
+        }
 
     @Override
     public List<MedallaDTO> toListDTO(List<Medalla> medallas) { // Corregir nombre parámetro

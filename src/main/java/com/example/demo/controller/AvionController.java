@@ -1,11 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Avion;
+import com.example.demo.DTO.AvionDTO;
 import com.example.demo.services.AvionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -17,29 +19,41 @@ public class AvionController {
     private AvionService avionService;
 
     @GetMapping
-    public ResponseEntity<List<Avion>> getAllAviones() {
-        return ResponseEntity.ok(avionService.getAll());
+    public ResponseEntity<List<AvionDTO>> getAllAviones() {
+        List<AvionDTO> dtos = avionService.getAll();
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Avion> getAvionById(@PathVariable Long id) {
-        return ResponseEntity.ok(avionService.getById(id));
+    public ResponseEntity<AvionDTO> getAvionById(@PathVariable Long id) {
+        AvionDTO dto = avionService.getById(id);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<Avion> createAvion(@RequestBody Avion avion) {
-        return ResponseEntity.ok(avionService.create(avion));
+    public ResponseEntity<AvionDTO> createAvion(@RequestBody AvionDTO dto) {
+        AvionDTO created = avionService.createAvion(dto);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Avion> updateAvion(@PathVariable Long id, @RequestBody Avion avion) {
-        avion.setId(id);
-        return ResponseEntity.ok(avionService.update(avion));
+    public ResponseEntity<AvionDTO> updateAvion(
+            @PathVariable Long id,
+            @RequestBody AvionDTO dto
+    ) {
+        dto.setId(id);
+        AvionDTO updated = avionService.updateAvion(dto);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAvion(@PathVariable Long id) {
-        avionService.delete(id);
+        avionService.deleteAvion(id);
         return ResponseEntity.noContent().build();
     }
 }

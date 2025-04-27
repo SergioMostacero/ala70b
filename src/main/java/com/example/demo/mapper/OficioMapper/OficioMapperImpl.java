@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.example.demo.DTO.AvionDTO;
 import com.example.demo.DTO.OficioDTO;
+import com.example.demo.model.Avion;
 import com.example.demo.model.Oficio;
 
 @Component 
@@ -17,6 +19,17 @@ public class OficioMapperImpl implements OficioMapper {
         oficioDTO.setId(oficio.getId()); 
         oficioDTO.setNombre(oficio.getNombre());
         return oficioDTO;
+    }
+
+    @Override
+    public Oficio toEntity(OficioDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+        Oficio oficio = new Oficio();
+        oficio.setId(dto.getId());     
+        oficio.setNombre(dto.getNombre());
+        return oficio;
     }
 
     @Override

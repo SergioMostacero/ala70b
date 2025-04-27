@@ -1,60 +1,66 @@
 package com.example.demo.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.demo.DTO.GrupoSanguineoDTO;
+import com.example.demo.mapper.GrupoSanguineoMapper.GrupoSanguineoMapper;
 import com.example.demo.model.GrupoSanguineo;
 import com.example.demo.repository.GrupoSanguineoRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+
 @Service
 public class GrupoSanguineoService {
-    
 
     @Autowired
-    private GrupoSanguineoRepository GrupoSanguineoRepository;
+    private GrupoSanguineoRepository repo;
 
-    public List<GrupoSanguineoDTO> getAllGrupoSanguineos() {
-        return GrupoSanguineoRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    @Autowired
+    private GrupoSanguineoMapper mapper;
+
+    public List<GrupoSanguineoDTO> getAll() {
+        List<GrupoSanguineo> entidades = repo.findAll();
+        return mapper.toListDTO(entidades);
     }
 
-    public GrupoSanguineoDTO getGrupoSanguineoById(Long id) {
-        return GrupoSanguineoRepository.findById(id)
-                .map(this::convertToDTO)
-                .orElseThrow(() -> new RuntimeException("GrupoSanguineo no encontrado"));
+    public GrupoSanguineoDTO getById(Long id) {
+        GrupoSanguineo entidad = repo.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Grupo sanguíneo no encontrado con id: " + id
+            ));
+        return mapper.toDTO(entidad);
     }
 
-    public GrupoSanguineoDTO createGrupoSanguineo(GrupoSanguineoDTO GrupoSanguineoDTO) {
-        GrupoSanguineo GrupoSanguineo = convertToEntity(GrupoSanguineoDTO);
-        return convertToDTO(GrupoSanguineoRepository.save(GrupoSanguineo));
+    public GrupoSanguineoDTO create(GrupoSanguineoDTO dto) {
+        GrupoSanguineo nueva = mapper.toEntity(dto);
+        GrupoSanguineo guardada = repo.save(nueva);
+        return mapper.toDTO(guardada);
     }
 
-    public GrupoSanguineoDTO updateGrupoSanguineo(Long id, GrupoSanguineoDTO GrupoSanguineoDTO) {
-        GrupoSanguineo GrupoSanguineo = GrupoSanguineoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("GrupoSanguineo no encontrado"));
-        GrupoSanguineo.setTipo(GrupoSanguineoDTO.getTipo());
-        return convertToDTO(GrupoSanguineoRepository.save(GrupoSanguineo));
+    public GrupoSanguineoDTO update(Long id, GrupoSanguineoDTO dto) {
+        if (!repo.existsById(id)) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Grupo sanguíneo no encontrado con id: " + id
+            );
+        }
+        dto.setId(id);
+        GrupoSanguineo toSave = mapper.toEntity(dto);
+        GrupoSanguineo actualizado = repo.save(toSave);
+        return mapper.toDTO(actualizado);
     }
 
-    public void deleteGrupoSanguineo(Long id) {
-        GrupoSanguineoRepository.deleteById(id);
-    }
-
-    private GrupoSanguineoDTO convertToDTO(GrupoSanguineo GrupoSanguineo) {
-        GrupoSanguineoDTO dto = new GrupoSanguineoDTO();
-        dto.setId(GrupoSanguineo.getId());
-        dto.setTipo(GrupoSanguineo.getTipo());
-        return dto;
-    }
-
-    private GrupoSanguineo convertToEntity(GrupoSanguineoDTO dto) {
-        GrupoSanguineo GrupoSanguineo = new GrupoSanguineo();
-        GrupoSanguineo.setTipo(dto.getTipo());
-        return GrupoSanguineo;
+    public void delete(Long id) {
+        if (!repo.existsById(id)) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Grupo sanguíneo no encontrado con id: " + id
+            );
+        }
+        repo.deleteById(id);
     }
 }

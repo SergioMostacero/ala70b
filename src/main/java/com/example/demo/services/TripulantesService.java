@@ -3,7 +3,9 @@ package com.example.demo.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.demo.DTO.TripulantesDTO;
 import com.example.demo.mapper.TripulantesMapper.TripulantesMapper;
@@ -48,26 +50,29 @@ public class TripulantesService {
     @Autowired
     private TripulantesMapper tripulantesMapper;
 
-   public List<Tripulantes> getTripulantes() {
-      return tripulantesRepository.findAll();
-   }
+    public List<TripulantesDTO> getAll() {
+      List<Tripulantes> entidades = tripulantesRepository.findAll();
+      return tripulantesMapper.toListDTO(entidades);
+  }
 
-   public Tripulantes login(String email, String contrasena) {
-      return tripulantesRepository.findByEmailAndContrasena(email, contrasena)
-          .orElseThrow(() -> new RuntimeException("Tripulantes no encontrado o credenciales incorrectas"));
-   }
-  
-  
-   public Tripulantes getTripulantesById(Long id) {
-      return tripulantesRepository.findById(id)
-         .orElseThrow(() -> new RuntimeException("Tripulantes no encontrado con ID: " + id));
-   }
+  public TripulantesDTO login(String email, String contrasena) {
+      Tripulantes entidad = tripulantesRepository
+          .findByEmailAndContrasena(email, contrasena)
+          .orElseThrow(() -> new ResponseStatusException(
+              HttpStatus.UNAUTHORIZED,
+              "Credenciales incorrectas"
+          ));
+      return tripulantesMapper.toDTO(entidad);
+  }
 
-   public Tripulantes deleteTripulantesById(Long id) {
-      Tripulantes tripulantes = getTripulantesById(id);
-      tripulantesRepository.deleteById(id);
-      return tripulantes;
-   }
+  public TripulantesDTO getById(Long id) {
+      Tripulantes entidad = tripulantesRepository.findById(id)
+          .orElseThrow(() -> new ResponseStatusException(
+              HttpStatus.NOT_FOUND,
+              "Tripulante no encontrado con id: " + id
+          ));
+      return tripulantesMapper.toDTO(entidad);
+  }
 
    public TripulantesDTO createTripulantes(TripulantesDTO tripulantesDTO) {
       GrupoSanguineo grupoSanguineo = grupoSanguineoRepository.findById(tripulantesDTO.getGrupoSanguineoDTO().getId())
@@ -94,10 +99,29 @@ public class TripulantesService {
       return tripulantesMapper.toDTO(tripulantes);
    }
 
-   public Tripulantes updateTripulantesName(Long id, String newName) {
-      Tripulantes tripulantes = getTripulantesById(id);
-      tripulantes.setNombre(newName);
-      return tripulantesRepository.save(tripulantes);
+   public TripulantesDTO updateName(Long id, String newName) {
+        Tripulantes entidad = tripulantesRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Tripulante no encontrado con id: " + id
+            ));
+        entidad.setNombre(newName);
+        Tripulantes updated = tripulantesRepository.save(entidad);
+        return tripulantesMapper.toDTO(updated);
+    }
+
+    /**
+     * Elimina un tripulante por ID
+     */
+    public void delete(Long id) {
+        if (!tripulantesRepository.existsById(id)) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Tripulante no encontrado con id: " + id
+            );
+        }
+        tripulantesRepository.deleteById(id);
+    
    }
 }
    
