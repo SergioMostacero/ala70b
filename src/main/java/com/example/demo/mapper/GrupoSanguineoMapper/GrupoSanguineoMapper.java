@@ -9,6 +9,6 @@ import com.example.demo.model.GrupoSanguineo;
 public interface GrupoSanguineoMapper {
 
     List<GrupoSanguineoDTO> toListDTO(List<GrupoSanguineo>grupoSanguineo);
-    GrupoSanguineo toEntity(GrupoSanguineoDTO grupoSanguineoDTO);
+    GrupoSanguineo toEntity(GrupoSanguineoDTO dto);
     GrupoSanguineoDTO toDTO(GrupoSanguineo grupoSanguineo);
 }

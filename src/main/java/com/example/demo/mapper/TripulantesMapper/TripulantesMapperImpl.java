@@ -64,11 +64,56 @@ public class TripulantesMapperImpl implements TripulantesMapper {
         if (dto == null) {
             return null;
         }
+
         Tripulantes tripulantes = new Tripulantes();
-        tripulantes.setId(dto.getId());     
+
+        tripulantes.setId(dto.getId());           
         tripulantes.setNombre(dto.getNombre());
+        tripulantes.setApellidos(dto.getApellidos());
+        tripulantes.setEmail(dto.getEmail());
+        tripulantes.setContrasena(dto.getContrasena());
+        tripulantes.setAntiguedad(dto.getAntiguedad());
+        tripulantes.setPermisos(dto.getPermisos());
+        tripulantes.setHoras_totales(dto.getHoras_totales());
+
+        tripulantes.setRango(
+            dto.getRangoDTO() != null
+                ? rangoMapper.toEntity(dto.getRangoDTO())
+                : null
+        );
+
+        tripulantes.setGrupoSanguineo(
+            dto.getGrupoSanguineoDTO() != null
+                ? grupoSanguineoMapper.toEntity(dto.getGrupoSanguineoDTO())
+                : null
+        );
+
+        tripulantes.setOficio(
+            dto.getOficioDTO() != null
+                ? oficioMapper.toEntity(dto.getOficioDTO())
+                : null
+        );
+
+        // ────────── Listas ──────────
+        tripulantes.setMedallas(
+            dto.getMedallasDTO() != null
+                ? dto.getMedallasDTO().stream()
+                    .map(medallaMapper::toEntity)
+                    .collect(Collectors.toList())
+                : List.of()                                    // Java 9+, usa new ArrayList<>() si estás en 8
+        );
+
+        tripulantes.setVuelos(
+            dto.getVuelosDTO() != null
+                ? dto.getVuelosDTO().stream()
+                    .map(vueloMapper::toEntity)
+                    .collect(Collectors.toList())
+                : List.of()
+        );
+
         return tripulantes;
     }
+
 
     @Override
     public List<TripulantesDTO> toListDTO(List<Tripulantes> tripulantess) {

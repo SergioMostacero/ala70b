@@ -19,7 +19,6 @@ public class MisionMapperImpl implements MisionMapper {
         MisionDTO dto = new MisionDTO();
         dto.setId(mision.getId());
         dto.setNombre(mision.getNombre());
-        // otros campos
         return dto;
     }
 

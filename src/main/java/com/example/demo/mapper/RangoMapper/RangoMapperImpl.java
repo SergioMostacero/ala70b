@@ -17,7 +17,7 @@ public class RangoMapperImpl implements RangoMapper{
     @Override
     public RangoDTO toDTO(Rango rango){
         RangoDTO rangoDTO = new RangoDTO();
-
+        rangoDTO.setId(rango.getId());
         rangoDTO.setNombre(rango.getNombre());
 
         return rangoDTO;

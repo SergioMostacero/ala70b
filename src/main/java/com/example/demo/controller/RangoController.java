@@ -19,19 +19,19 @@ public class RangoController {
     private RangoService rangoService;
 
     @GetMapping
-    public ResponseEntity<List<RangoDTO>> getAll() {
+    public ResponseEntity<List<RangoDTO>> getAllRangos() {
         List<RangoDTO> dtos = rangoService.getAll();
         return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RangoDTO> getById(@PathVariable Long id) {
+    public ResponseEntity<RangoDTO> getRangoById(@PathVariable Long id) {
         RangoDTO dto = rangoService.getById(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<RangoDTO> create(@RequestBody RangoDTO dto) {
+    public ResponseEntity<RangoDTO> createRango(@RequestBody RangoDTO dto) {
         RangoDTO created = rangoService.create(dto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -41,7 +41,7 @@ public class RangoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RangoDTO> update(
+    public ResponseEntity<RangoDTO> updateRango(
             @PathVariable Long id,
             @RequestBody RangoDTO dto
     ) {
@@ -51,7 +51,7 @@ public class RangoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteRango(@PathVariable Long id) {
         rangoService.delete(id);
         return ResponseEntity.noContent().build();
     }

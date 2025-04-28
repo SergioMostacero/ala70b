@@ -36,9 +36,7 @@ public class OficioService {
     }
 
     public OficioDTO create(OficioDTO dto) {
-        // DTO → entidad
         Oficio nueva = mapper.toEntity(dto);
-        // guarda y devuelve DTO con ID asignado
         Oficio guardada = repo.save(nueva);
         return mapper.toDTO(guardada);
     }

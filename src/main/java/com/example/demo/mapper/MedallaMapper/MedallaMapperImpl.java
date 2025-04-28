@@ -18,6 +18,7 @@ public class MedallaMapperImpl implements MedallaMapper {
         MedallaDTO medallaDTO = new MedallaDTO();
         medallaDTO.setId(medalla.getId()); // Agregar ID
         medallaDTO.setNombre(medalla.getNombre());
+        medallaDTO.setDescripcion(medalla.getDescripcion());
         return medallaDTO;
     }
 
@@ -29,6 +30,7 @@ public class MedallaMapperImpl implements MedallaMapper {
             Medalla medalla = new Medalla();
             medalla.setId(dto.getId());     
             medalla.setNombre(dto.getNombre());
+            medalla.setDescripcion(dto.getDescripcion());
             return medalla;
         }
 

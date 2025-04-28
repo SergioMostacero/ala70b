@@ -15,9 +15,8 @@ public class GrupoSanguineoMapperImpl implements GrupoSanguineoMapper{
     @Override
     public GrupoSanguineoDTO toDTO(GrupoSanguineo grupoSanguineo){
         GrupoSanguineoDTO grupoSanguineoDTO = new GrupoSanguineoDTO();
-
+        grupoSanguineoDTO.setId(grupoSanguineo.getId());
         grupoSanguineoDTO.setTipo(grupoSanguineo.getTipo());
-
         return grupoSanguineoDTO;
     }
 

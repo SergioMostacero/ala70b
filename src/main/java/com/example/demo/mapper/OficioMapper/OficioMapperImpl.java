@@ -5,9 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.example.demo.DTO.AvionDTO;
 import com.example.demo.DTO.OficioDTO;
-import com.example.demo.model.Avion;
 import com.example.demo.model.Oficio;
 
 @Component 

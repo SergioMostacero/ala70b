@@ -19,19 +19,19 @@ public class GrupoSanguineoController {
     private GrupoSanguineoService grupoSanguineoService;
 
     @GetMapping
-    public ResponseEntity<List<GrupoSanguineoDTO>> getAll() {
+    public ResponseEntity<List<GrupoSanguineoDTO>> getAllGruposSanguineos() {
         List<GrupoSanguineoDTO> dtos = grupoSanguineoService.getAll();
         return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GrupoSanguineoDTO> getById(@PathVariable Long id) {
+    public ResponseEntity<GrupoSanguineoDTO> getGrupoSanguineoById(@PathVariable Long id) {
         GrupoSanguineoDTO dto = grupoSanguineoService.getById(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<GrupoSanguineoDTO> create(@RequestBody GrupoSanguineoDTO dto) {
+    public ResponseEntity<GrupoSanguineoDTO> createGrupoSanguineo(@RequestBody GrupoSanguineoDTO dto) {
         GrupoSanguineoDTO created = grupoSanguineoService.create(dto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -41,7 +41,7 @@ public class GrupoSanguineoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GrupoSanguineoDTO> update(
+    public ResponseEntity<GrupoSanguineoDTO> updateGrupoSanguineo(
             @PathVariable Long id,
             @RequestBody GrupoSanguineoDTO dto
     ) {
@@ -51,7 +51,7 @@ public class GrupoSanguineoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteGrupoSanguineo(@PathVariable Long id) {
         grupoSanguineoService.delete(id);
         return ResponseEntity.noContent().build();
     }

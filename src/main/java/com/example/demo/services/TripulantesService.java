@@ -1,5 +1,4 @@
 package com.example.demo.services;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,8 @@ import com.example.demo.repository.OficioRepository;
 import com.example.demo.repository.RangoRepository;
 import com.example.demo.repository.TripulantesRepository;
 import com.example.demo.repository.VueloRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class TripulantesService {
@@ -74,30 +75,30 @@ public class TripulantesService {
       return tripulantesMapper.toDTO(entidad);
   }
 
-   public TripulantesDTO createTripulantes(TripulantesDTO tripulantesDTO) {
-      GrupoSanguineo grupoSanguineo = grupoSanguineoRepository.findById(tripulantesDTO.getGrupoSanguineoDTO().getId())
-            .orElseThrow(() -> new RuntimeException("Grupo Sanguineo no encontrado"));
-      Rango rango = rangoRepository.findById(tripulantesDTO.getRangoDTO().getId())
-            .orElseThrow(() -> new RuntimeException("Rango no encontrada"));
-      Oficio oficio = oficioRepository.findById(tripulantesDTO.getOficioDTO().getId())
-            .orElseThrow(() -> new RuntimeException("Itinerario no encontrado"));
+  @Transactional
+  public TripulantesDTO createTripulantes(TripulantesDTO dto) {
+  
+      Tripulantes entity = tripulantesMapper.toEntity(dto);
+      entity.setGrupoSanguineo(
+          grupoSanguineoRepository.findById(dto.getGrupoSanguineoDTO().getId())
+              .orElseThrow(() -> new ResponseStatusException(
+                  HttpStatus.BAD_REQUEST, "Grupo sanguíneo no encontrado"))
+      );
+      entity.setRango(
+          rangoRepository.findById(dto.getRangoDTO().getId())
+              .orElseThrow(() -> new ResponseStatusException(
+                  HttpStatus.BAD_REQUEST, "Rango no encontrado"))
+      );
+      entity.setOficio(
+          oficioRepository.findById(dto.getOficioDTO().getId())
+              .orElseThrow(() -> new ResponseStatusException(
+                  HttpStatus.BAD_REQUEST, "Oficio no encontrado"))
+      );
+      Tripulantes saved = tripulantesRepository.save(entity);
 
-      Tripulantes tripulantes = new Tripulantes();
-      tripulantes.setNombre(tripulantesDTO.getNombre());
-      tripulantes.setApellidos(tripulantesDTO.getApellidos());
-      tripulantes.setEmail(tripulantesDTO.getEmail());
-      tripulantes.setContrasena(tripulantesDTO.getContrasena());
-      tripulantes.setAntiguedad(tripulantesDTO.getAntiguedad());
-      tripulantes.setPermisos(tripulantesDTO.getPermisos());
-      tripulantes.setHoras_totales(tripulantesDTO.getHoras_totales());
-      tripulantes.setGrupoSanguineo(grupoSanguineo);
-      tripulantes.setRango(rango);
-      tripulantes.setOficio(oficio);      
-
-      tripulantes = tripulantesRepository.save(tripulantes);
-
-      return tripulantesMapper.toDTO(tripulantes);
-   }
+      return tripulantesMapper.toDTO(saved);
+  }
+  
 
    public TripulantesDTO updateName(Long id, String newName) {
         Tripulantes entidad = tripulantesRepository.findById(id)
