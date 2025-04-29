@@ -77,6 +77,13 @@ public class TripulantesController {
         TripulantesDTO created = tripulantesService.createTripulantes(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
+    // En MedallaController.java
+        @PutMapping("/asignar-medalla/{tripulanteId}/{medallaId}")
+        public ResponseEntity<String> asignarMedalla(@PathVariable Long tripulanteId, @PathVariable Long medallaId) {
+            tripulantesService.asignarMedalla(tripulanteId, medallaId);
+            return ResponseEntity.ok("Medalla asignada correctamente");
+        }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<TripulantesDTO> updateTripulante(

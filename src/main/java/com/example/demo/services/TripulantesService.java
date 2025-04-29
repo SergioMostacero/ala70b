@@ -75,6 +75,18 @@ public class TripulantesService {
       return tripulantesMapper.toDTO(entidad);
   }
 
+  public void asignarMedalla(Long tripulanteId, Long medallaId) {
+    Tripulantes tripulante = tripulantesRepository.findById(tripulanteId)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tripulante no encontrado"));
+  
+    Medalla medalla = medallaRepository.findById(medallaId)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Medalla no encontrada"));
+  
+    // Asignar la medalla
+    tripulante.getMedallas().add(medalla);
+    tripulantesRepository.save(tripulante);
+  }
+
   @Transactional
   public TripulantesDTO createTripulantes(TripulantesDTO dto) {
   
