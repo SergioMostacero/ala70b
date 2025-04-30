@@ -45,4 +45,21 @@ public class MedallaService {
         Medalla guardada = medallaRepository.save(entidad);
         return medallaMapper.toDTO(guardada);
     }
+
+    public void asignarMedalla(Long tripulanteId, Long medallaId) {
+        Tripulantes tripulante = tripulantesRepository.findById(tripulanteId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tripulante no encontrado"));
+      
+        Medalla medalla = medallaRepository.findById(medallaId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Medalla no encontrada"));
+      
+            if(tripulante.getMedallas().contains(medalla)) {
+                throw new ResponseStatusException(
+                    HttpStatus.CONFLICT, 
+                    "El tripulante ya posee esta medalla"
+                );
+            }
+        tripulante.getMedallas().add(medalla);
+        tripulantesRepository.save(tripulante);
+      }
 }

@@ -75,18 +75,6 @@ public class TripulantesService {
       return tripulantesMapper.toDTO(entidad);
   }
 
-  public void asignarMedalla(Long tripulanteId, Long medallaId) {
-    Tripulantes tripulante = tripulantesRepository.findById(tripulanteId)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tripulante no encontrado"));
-  
-    Medalla medalla = medallaRepository.findById(medallaId)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Medalla no encontrada"));
-  
-    // Asignar la medalla
-    tripulante.getMedallas().add(medalla);
-    tripulantesRepository.save(tripulante);
-  }
-
   @Transactional
   public TripulantesDTO createTripulantes(TripulantesDTO dto) {
   
@@ -111,6 +99,42 @@ public class TripulantesService {
       return tripulantesMapper.toDTO(saved);
   }
   
+  @Transactional
+public TripulantesDTO updateTripulante(Long id, TripulantesDTO dto) {
+
+    Tripulantes entity = tripulantesRepository.findById(id)
+        .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND, "Tripulante no encontrado con id: " + id));
+
+    entity.setNombre(dto.getNombre());
+    entity.setApellidos(dto.getApellidos());
+    entity.setEmail(dto.getEmail());
+    entity.setContrasena(dto.getContrasena());
+    entity.setAntiguedad(dto.getAntiguedad());
+    entity.setHoras_totales(dto.getHoras_totales());
+    entity.setPermisos(dto.getPermisos()); 
+
+    entity.setGrupoSanguineo(
+        grupoSanguineoRepository.findById(dto.getGrupoSanguineoDTO().getId())
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "Grupo sanguíneo no encontrado"))
+    );
+    entity.setRango(
+        rangoRepository.findById(dto.getRangoDTO().getId())
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "Rango no encontrado"))
+    );
+    entity.setOficio(
+        oficioRepository.findById(dto.getOficioDTO().getId())
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "Oficio no encontrado"))
+    );
+
+    Tripulantes saved = tripulantesRepository.save(entity);
+    return tripulantesMapper.toDTO(saved);
+}
+
+
 
    public TripulantesDTO updateName(Long id, String newName) {
         Tripulantes entidad = tripulantesRepository.findById(id)

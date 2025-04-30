@@ -42,4 +42,11 @@ public class MedallaController {
                 .toUri();
         return ResponseEntity.created(location).body(created);
     }
+
+    @PutMapping("/asignar-medalla/{tripulanteId}/{medallaId}")
+    public ResponseEntity<String> asignarMedalla(@PathVariable Long tripulanteId, @PathVariable Long medallaId) {
+        medallaService.asignarMedalla(tripulanteId, medallaId);
+        return ResponseEntity.ok("Medalla asignada correctamente");
+    }
+
 }

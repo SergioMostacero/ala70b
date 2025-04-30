@@ -16,6 +16,7 @@ public class OficioMapperImpl implements OficioMapper {
         OficioDTO oficioDTO = new OficioDTO();
         oficioDTO.setId(oficio.getId()); 
         oficioDTO.setNombre(oficio.getNombre());
+        oficioDTO.setDescripcion(oficio.getDescripcion());
         return oficioDTO;
     }
 
@@ -27,6 +28,8 @@ public class OficioMapperImpl implements OficioMapper {
         Oficio oficio = new Oficio();
         oficio.setId(dto.getId());     
         oficio.setNombre(dto.getNombre());
+        oficio.setDescripcion(dto.getDescripcion());
+
         return oficio;
     }
 

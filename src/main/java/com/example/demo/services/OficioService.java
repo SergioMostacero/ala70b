@@ -36,21 +36,26 @@ public class OficioService {
     }
 
     public OficioDTO create(OficioDTO dto) {
-        Oficio nueva = mapper.toEntity(dto);
+        Oficio nueva = new Oficio();
+        nueva.setNombre(dto.getNombre());
+        nueva.setDescripcion(dto.getDescripcion()); 
+    
         Oficio guardada = repo.save(nueva);
         return mapper.toDTO(guardada);
     }
+    
 
     public OficioDTO update(Long id, OficioDTO dto) {
-        if (!repo.existsById(id)) {
-            throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "Oficio no encontrado con id: " + id
-            );
-        }
-        dto.setId(id);
-        Oficio toSave = mapper.toEntity(dto);
-        Oficio actualizada = repo.save(toSave);
+        Oficio existente = repo.findById(id).orElseThrow(() ->
+                new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Oficio no encontrado con id: " + id)
+        );
+
+        existente.setNombre(dto.getNombre());
+        existente.setDescripcion(dto.getDescripcion());
+
+        Oficio actualizada = repo.save(existente);
         return mapper.toDTO(actualizada);
     }
 

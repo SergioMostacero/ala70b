@@ -41,12 +41,12 @@ public class OficioController {
         return ResponseEntity.created(location).body(created);
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<OficioDTO> updateOficio(
             @PathVariable Long id,
             @RequestBody OficioDTO dto
     ) {
-        dto.setId(id);
         OficioDTO updated = oficioService.update(id, dto);
         return ResponseEntity.ok(updated);
     }
