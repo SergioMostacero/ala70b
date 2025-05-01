@@ -14,9 +14,10 @@ import lombok.Data;
 public class VueloDTO {
     private Long id;
 
-    private LocalDate fecha;
+    private LocalDate fecha_salida;
     private LocalTime hora_salida;
     private LocalTime hora_llegada;
+    private LocalDate fechaLlegada;
     private String anticipo;
     private String gasolina;
 

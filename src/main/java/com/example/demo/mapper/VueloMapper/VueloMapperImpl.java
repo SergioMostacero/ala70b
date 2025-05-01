@@ -33,36 +33,35 @@ public class VueloMapperImpl implements VueloMapper {
         if (vuelo == null) {
             return null;
         }
-
+    
         VueloDTO dto = new VueloDTO();
-        // Campos directos
+    
         dto.setId(vuelo.getId());
-        dto.setFecha(vuelo.getFecha());
+        dto.setFecha_salida(vuelo.getFecha_salida());
         dto.setHora_salida(vuelo.getHora_salida());
         dto.setHora_llegada(vuelo.getHora_llegada());
+        dto.setFechaLlegada(vuelo.getFecha_llegada());
         dto.setAnticipo(vuelo.getAnticipo());
         dto.setGasolina(vuelo.getGasolina());
-
+    
         // Avion
         if (vuelo.getAvion() != null) {
-            AvionDTO avionDTO = avionMapper.toDTO(vuelo.getAvion());
-            dto.setAvionDTO(avionDTO);
+            dto.setAvionDTO(avionMapper.toDTO(vuelo.getAvion()));
         }
-
+    
         // Mision
         if (vuelo.getMisiones() != null) {
-            MisionDTO misionDTO = misionMapper.toDTO(vuelo.getMisiones());
-            dto.setMisionDTO(misionDTO);
+            dto.setMisionDTO(misionMapper.toDTO(vuelo.getMisiones()));
         }
-
+    
         // Itinerario
         if (vuelo.getItinerario() != null) {
-            ItinerarioDTO itinerarioDTO = itinerarioMapper.toDTO(vuelo.getItinerario());
-            dto.setItinerarioDTO(itinerarioDTO);
+            dto.setItinerarioDTO(itinerarioMapper.toDTO(vuelo.getItinerario()));
         }
-
+    
         return dto;
     }
+    
 
     @Override
     public Vuelo toEntity(VueloDTO dto) {
@@ -73,9 +72,10 @@ public class VueloMapperImpl implements VueloMapper {
         Vuelo vuelo = new Vuelo();
         // Campos directos
         vuelo.setId(dto.getId()); // Ojo con setId si es create
-        vuelo.setFecha(dto.getFecha());
+        vuelo.setFecha_salida(dto.getFecha_salida());
         vuelo.setHora_salida(dto.getHora_salida());
         vuelo.setHora_llegada(dto.getHora_llegada());
+        vuelo.setFecha_llegada(dto.getFechaLlegada());
         vuelo.setAnticipo(dto.getAnticipo());
         vuelo.setGasolina(dto.getGasolina());
 

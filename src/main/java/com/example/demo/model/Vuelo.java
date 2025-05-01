@@ -32,13 +32,17 @@ public class Vuelo {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDate fecha;
+    private LocalDate fecha_salida;
 
     @Column(nullable = false)
     private LocalTime hora_salida;
 
     @Column(nullable = false)
     private LocalTime hora_llegada;
+
+    @Column(nullable = false)
+    private LocalDate fecha_llegada;
+
 
     @Column(nullable = false)
     private String anticipo;

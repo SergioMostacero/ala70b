@@ -66,9 +66,10 @@ public class VueloService {
             .orElseThrow(() -> new RuntimeException("Itinerario no encontrado"));
     
         Vuelo vuelo = new Vuelo();
-        vuelo.setFecha(dto.getFecha());
+        vuelo.setFecha_salida(dto.getFecha_salida());
         vuelo.setHora_salida(dto.getHora_salida());
         vuelo.setHora_llegada(dto.getHora_llegada());
+        vuelo.setFecha_llegada(dto.getFechaLlegada());
         vuelo.setAnticipo(dto.getAnticipo());
         vuelo.setGasolina(dto.getGasolina());
         vuelo.setAvion(avion);
@@ -100,9 +101,10 @@ public class VueloService {
             .orElseThrow(() -> new RuntimeException("Vuelo no encontrado"));
 
         // Campos básicos
-        vuelo.setFecha(dto.getFecha());
+        vuelo.setFecha_salida(dto.getFecha_salida());
         vuelo.setHora_salida(dto.getHora_salida());
         vuelo.setHora_llegada(dto.getHora_llegada());
+        vuelo.setFecha_llegada(dto.getFechaLlegada());
         vuelo.setAnticipo(dto.getAnticipo());
         vuelo.setGasolina(dto.getGasolina());
 
