@@ -10,6 +10,13 @@ import com.example.demo.model.Ubicacion;
 @Component
 public class UbicacionMapperImpl implements UbicacionMapper {
 
+    // Método helper para extraer la ciudad
+    private String extraerCiudad(String ciudadCompleta) {
+        if (ciudadCompleta == null) return "";
+        String[] partes = ciudadCompleta.split("/");
+        return partes[partes.length - 1];
+    }
+
     @Override
     public UbicacionDTO toDTO(Ubicacion ubicacion) {
         if (ubicacion == null) {
@@ -19,7 +26,7 @@ public class UbicacionMapperImpl implements UbicacionMapper {
         dto.setId(ubicacion.getId());
         dto.setPaisCodigo(ubicacion.getPaisCodigo());
         dto.setPais(ubicacion.getPais());
-        dto.setCiudad(ubicacion.getCiudad());
+        dto.setCiudad(extraerCiudad(ubicacion.getCiudad()));
         dto.setZonaHoraria(ubicacion.getZonaHoraria());
         dto.setLatitud(ubicacion.getLatitud());
         dto.setLongitud(ubicacion.getLongitud());

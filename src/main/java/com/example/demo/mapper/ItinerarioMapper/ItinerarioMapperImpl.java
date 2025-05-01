@@ -10,7 +10,7 @@ import com.example.demo.model.Itinerario;
 
 @Component
 public class ItinerarioMapperImpl implements ItinerarioMapper {
-
+    
     @Override
     public ItinerarioDTO toDTO(Itinerario itinerario) {
         if (itinerario == null) {

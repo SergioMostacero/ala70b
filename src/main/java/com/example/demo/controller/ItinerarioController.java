@@ -20,14 +20,12 @@ public class ItinerarioController {
 
     @GetMapping
     public ResponseEntity<List<ItinerarioDTO>> getAllItinerarios() {
-        List<ItinerarioDTO> dtos = itinerarioService.getAll();
-        return ResponseEntity.ok(dtos);
+        return ResponseEntity.ok(itinerarioService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ItinerarioDTO> getItinerarioById(@PathVariable Long id) {
-        ItinerarioDTO dto = itinerarioService.getById(id);
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(itinerarioService.getById(id));
     }
 
     @PostMapping
@@ -45,7 +43,6 @@ public class ItinerarioController {
             @PathVariable Long id,
             @RequestBody ItinerarioDTO dto
     ) {
-        dto.setId(id);
         ItinerarioDTO updated = itinerarioService.update(id, dto);
         return ResponseEntity.ok(updated);
     }
