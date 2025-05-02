@@ -43,7 +43,6 @@ public class Vuelo {
     @Column(nullable = false)
     private LocalDate fecha_llegada;
 
-
     @Column(nullable = false)
     private String anticipo;
 

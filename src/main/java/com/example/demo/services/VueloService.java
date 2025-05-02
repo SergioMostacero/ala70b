@@ -69,7 +69,7 @@ public class VueloService {
         vuelo.setFecha_salida(dto.getFecha_salida());
         vuelo.setHora_salida(dto.getHora_salida());
         vuelo.setHora_llegada(dto.getHora_llegada());
-        vuelo.setFecha_llegada(dto.getFechaLlegada());
+        vuelo.setFecha_llegada(dto.getFecha_llegada());
         vuelo.setAnticipo(dto.getAnticipo());
         vuelo.setGasolina(dto.getGasolina());
         vuelo.setAvion(avion);
@@ -104,7 +104,7 @@ public class VueloService {
         vuelo.setFecha_salida(dto.getFecha_salida());
         vuelo.setHora_salida(dto.getHora_salida());
         vuelo.setHora_llegada(dto.getHora_llegada());
-        vuelo.setFecha_llegada(dto.getFechaLlegada());
+        vuelo.setFecha_llegada(dto.getFecha_llegada());
         vuelo.setAnticipo(dto.getAnticipo());
         vuelo.setGasolina(dto.getGasolina());
 

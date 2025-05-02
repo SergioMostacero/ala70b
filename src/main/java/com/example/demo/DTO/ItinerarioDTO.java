@@ -1,5 +1,6 @@
 package com.example.demo.DTO;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import lombok.Data;
@@ -11,7 +12,7 @@ public class ItinerarioDTO {
     
     private String nombre;
 
-    private String duracion;
+    private LocalTime duracion;
 
     private List<ItinerarioUbicacionDTO> ItinerarioUbicacionDTO;
 }

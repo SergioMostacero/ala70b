@@ -17,7 +17,7 @@ public class VueloDTO {
     private LocalDate fecha_salida;
     private LocalTime hora_salida;
     private LocalTime hora_llegada;
-    private LocalDate fechaLlegada;
+    private LocalDate fecha_llegada;
     private String anticipo;
     private String gasolina;
 

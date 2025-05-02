@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -32,7 +33,7 @@ public class Itinerario {
     private String nombre;
 
     @Column
-    private String duracion;
+    private LocalTime duracion;
 
     @OneToMany(mappedBy = "itinerario")
     @JsonIgnore
