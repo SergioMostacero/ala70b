@@ -1,6 +1,7 @@
 package com.example.demo.DTO;
 
 import java.sql.Date;
+import java.time.Duration;
 import java.util.List;
 
 import lombok.Data;
@@ -15,7 +16,7 @@ public class TripulantesDTO {
     private String contrasena;
     private Date antiguedad; 
     private Boolean permisos;
-    private Integer horas_totales;
+    private Double horas_totales;
     
     private GrupoSanguineoDTO grupoSanguineoDTO;
     private RangoDTO rangoDTO;

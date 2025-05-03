@@ -42,7 +42,9 @@ public class VueloMapperImpl implements VueloMapper {
         dto.setHora_llegada(vuelo.getHora_llegada());
         dto.setFecha_llegada(vuelo.getFecha_llegada());
         dto.setAnticipo(vuelo.getAnticipo());
-        dto.setGasolina(vuelo.getGasolina());
+        dto.setCombustible(vuelo.getCombustible());
+        dto.setHorasSumadas(vuelo.isHorasSumadas()); // NUEVO
+
     
         // Avion
         if (vuelo.getAvion() != null) {
@@ -77,7 +79,9 @@ public class VueloMapperImpl implements VueloMapper {
         vuelo.setHora_llegada(dto.getHora_llegada());
         vuelo.setFecha_llegada(dto.getFecha_llegada());
         vuelo.setAnticipo(dto.getAnticipo());
-        vuelo.setGasolina(dto.getGasolina());
+        vuelo.setCombustible(dto.getCombustible());
+        vuelo.setHorasSumadas(dto.isHorasSumadas()); // NUEVO
+
 
         // Avion: convertimos AvionDTO -> Avion (solo si no es null)
         if (dto.getAvionDTO() != null) {

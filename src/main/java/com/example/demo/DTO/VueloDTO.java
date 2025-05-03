@@ -1,5 +1,7 @@
 package com.example.demo.DTO;
 
+import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -18,9 +20,9 @@ public class VueloDTO {
     private LocalTime hora_salida;
     private LocalTime hora_llegada;
     private LocalDate fecha_llegada;
-    private String anticipo;
-    private String gasolina;
-
+    private BigDecimal anticipo;
+    private BigDecimal combustible;
+    private boolean horasSumadas;
     private AvionDTO avionDTO;
     private MisionDTO misionDTO;
     private ItinerarioDTO itinerarioDTO;

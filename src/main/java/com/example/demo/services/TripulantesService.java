@@ -51,20 +51,29 @@ public class TripulantesService {
     @Autowired
     private TripulantesMapper tripulantesMapper;
 
+    @Autowired
+    private VueloService vueloService;
+
+
     public List<TripulantesDTO> getAll() {
       List<Tripulantes> entidades = tripulantesRepository.findAll();
       return tripulantesMapper.toListDTO(entidades);
   }
 
   public TripulantesDTO login(String email, String contrasena) {
-      Tripulantes entidad = tripulantesRepository
-          .findByEmailAndContrasena(email, contrasena)
-          .orElseThrow(() -> new ResponseStatusException(
-              HttpStatus.UNAUTHORIZED,
-              "Credenciales incorrectas"
-          ));
-      return tripulantesMapper.toDTO(entidad);
-  }
+    Tripulantes entidad = tripulantesRepository
+        .findByEmailAndContrasena(email, contrasena)
+        .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.UNAUTHORIZED,
+            "Credenciales incorrectas"
+        ));
+
+    // Sumar automáticamente las horas de vuelo si corresponde
+    vueloService.sumarHorasVuelosRealizados();
+
+    return tripulantesMapper.toDTO(entidad);
+}
+
 
   public TripulantesDTO getById(Long id) {
       Tripulantes entidad = tripulantesRepository.findById(id)

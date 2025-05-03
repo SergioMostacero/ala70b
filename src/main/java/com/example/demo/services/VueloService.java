@@ -1,10 +1,12 @@
 package com.example.demo.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.demo.DTO.TripulantesDTO;
@@ -71,7 +73,7 @@ public class VueloService {
         vuelo.setHora_llegada(dto.getHora_llegada());
         vuelo.setFecha_llegada(dto.getFecha_llegada());
         vuelo.setAnticipo(dto.getAnticipo());
-        vuelo.setGasolina(dto.getGasolina());
+        vuelo.setCombustible(dto.getCombustible());
         vuelo.setAvion(avion);
         vuelo.setMisiones(mision);
         vuelo.setItinerario(itinerario);
@@ -106,7 +108,7 @@ public class VueloService {
         vuelo.setHora_llegada(dto.getHora_llegada());
         vuelo.setFecha_llegada(dto.getFecha_llegada());
         vuelo.setAnticipo(dto.getAnticipo());
-        vuelo.setGasolina(dto.getGasolina());
+        vuelo.setCombustible(dto.getCombustible());
 
         // Avion
         if (dto.getAvionDTO() != null && dto.getAvionDTO().getId() != null) {
@@ -155,7 +157,67 @@ public class VueloService {
                 HttpStatus.NOT_FOUND,
                 "Tripulante no encontrado con id: " + tripulanteId
             ));
+    
+        LocalDate hoy = LocalDate.now();
+        boolean actualizado = false;
+    
+        for (Vuelo vuelo : tripulante.getVuelos()) {
+            if (vuelo.getFecha_llegada() != null && 
+                !vuelo.isHorasSumadas() &&
+                vuelo.getFecha_llegada().isBefore(hoy)) {
+    
+                Itinerario itinerario = vuelo.getItinerario();
+                if (itinerario != null && itinerario.getDuracion() != null) {
+                    int horas = itinerario.getDuracion().getHour();
+                    int minutos = itinerario.getDuracion().getMinute();
+                    double duracionHoras = horas + (minutos / 60.0);
+    
+                    Double horasTotales = tripulante.getHoras_totales();
+                    if (horasTotales == null) horasTotales = 0.0;
+    
+                    tripulante.setHoras_totales(horasTotales + duracionHoras);
+                    vuelo.setHorasSumadas(true);
+                    actualizado = true;
+                }
+            }
+        }
+    
+        if (actualizado) {
+            tripulantesRepository.save(tripulante);
+            vueloRepository.saveAll(tripulante.getVuelos());
+        }
+    
         return vueloMapper.toListDTO(tripulante.getVuelos());
     }
     
+    
+
+    @Transactional
+    public void sumarHorasVuelosRealizados() {
+        List<Vuelo> vuelosPendientes = vueloRepository.findAll().stream()
+            .filter(v -> v.getFecha_llegada() != null &&
+                         v.getFecha_llegada().isBefore(LocalDate.now()) &&
+                         !v.isHorasSumadas())
+            .toList();
+    
+        for (Vuelo vuelo : vuelosPendientes) {
+            Itinerario itinerario = vuelo.getItinerario();
+            if (itinerario != null && itinerario.getDuracion() != null) {
+                int horas = itinerario.getDuracion().getHour();
+                int minutos = itinerario.getDuracion().getMinute();
+                double duracionHoras = horas + (minutos / 60.0);
+    
+                for (Tripulantes tripulante : vuelo.getTripulantes()) {
+                    double actuales = tripulante.getHoras_totales() == null ? 0.0 : tripulante.getHoras_totales();
+                    tripulante.setHoras_totales(actuales + duracionHoras);
+                    tripulantesRepository.save(tripulante);
+                }
+    
+                vuelo.setHorasSumadas(true);
+                vueloRepository.save(vuelo);
+            }
+        }
+    }
+    
+
 }

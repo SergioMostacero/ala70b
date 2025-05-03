@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -44,10 +46,13 @@ public class Vuelo {
     private LocalDate fecha_llegada;
 
     @Column(nullable = false)
-    private String anticipo;
+    private BigDecimal anticipo;
 
     @Column(nullable = false)
-    private String gasolina;
+    private BigDecimal combustible;
+    
+    @Column(nullable = false)
+    private boolean horasSumadas = false;
 
     @ManyToOne
     @JoinColumn(name = "avion_id")

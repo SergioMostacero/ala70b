@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import java.sql.Date;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class Tripulantes {
     private Boolean permisos;
 
     @Column
-    private Integer horas_totales;
+    private Double horas_totales;
 
     @ManyToOne
     @JoinColumn(name = "grupo_sanguineo_id", nullable = false)
