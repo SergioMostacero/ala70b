@@ -39,6 +39,8 @@ public class Itinerario {
     @JsonIgnore
     private List<ItinerarioUbicacion> itinerarioUbicaciones;
 
-
+    @OneToMany(mappedBy = "itinerario")
+    @JsonIgnore
+    private List<Vuelo> vuelos;
 
 }

@@ -15,4 +15,6 @@ public class ItinerarioDTO {
     private LocalTime duracion;
 
     private List<ItinerarioUbicacionDTO> ItinerarioUbicacionDTO;
+
+    private List<VueloDTO> vueloDTOs;
 }

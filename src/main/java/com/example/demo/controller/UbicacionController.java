@@ -62,4 +62,12 @@ public class UbicacionController {
         List<UbicacionDTO> dtos = ubicacionService.getByItinerario(itinerarioId);
         return ResponseEntity.ok(dtos);
     }
+
+    @GetMapping("/tripulante/{tripulanteId}")
+    public ResponseEntity<List<UbicacionDTO>> getUbicacionesPorTripulante(
+        @PathVariable Long tripulanteId
+    ) {
+        List<UbicacionDTO> ubicaciones = ubicacionService.getByTripulante(tripulanteId);
+        return ResponseEntity.ok(ubicaciones);
+    }
 }

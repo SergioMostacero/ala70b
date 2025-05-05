@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,7 +42,7 @@ public class Ubicacion {
     @Column
     private String zonaHoraria;
 
-    @Column
+    @Column 
     private String latitud;
 
     @Column
@@ -49,6 +51,4 @@ public class Ubicacion {
     @OneToMany(mappedBy = "ubicacion")
     @JsonIgnore
     private List<ItinerarioUbicacion> itinerarioUbicaciones;
-
-    
 }
