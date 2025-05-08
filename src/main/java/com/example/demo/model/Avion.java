@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,10 @@ public class Avion {
     // enum
     @Column
     private String nombre;
+
+    @Column
+    private BigDecimal max_combustible;
+
 
     @OneToMany(mappedBy = "avion")
     @JsonIgnore

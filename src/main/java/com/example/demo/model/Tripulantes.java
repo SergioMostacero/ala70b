@@ -51,7 +51,7 @@ public class Tripulantes {
     private Boolean permisos;
 
     @Column
-    private Double horas_totales;
+    private String horas_totales = "0:00";
 
     @ManyToOne
     @JoinColumn(name = "grupo_sanguineo_id", nullable = false)

@@ -19,7 +19,7 @@ public class AvionMapperImpl implements AvionMapper {
         AvionDTO dto = new AvionDTO();
         dto.setId(avion.getId());
         dto.setNombre(avion.getNombre());
-        // mapear otros campos si Avion los tuviera
+        dto.setMax_combustible(avion.getMax_combustible());
         return dto;
     }
 
@@ -31,6 +31,7 @@ public class AvionMapperImpl implements AvionMapper {
         Avion avion = new Avion();
         avion.setId(dto.getId());     
         avion.setNombre(dto.getNombre());
+        avion.setMax_combustible(dto.getMax_combustible());
         return avion;
     }
 

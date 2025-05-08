@@ -16,7 +16,7 @@ public class TripulantesDTO {
     private String contrasena;
     private Date antiguedad; 
     private Boolean permisos;
-    private Double horas_totales;
+    private String horas_totales;
     
     private GrupoSanguineoDTO grupoSanguineoDTO;
     private RangoDTO rangoDTO;

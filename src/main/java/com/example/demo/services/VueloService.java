@@ -151,6 +151,7 @@ public class VueloService {
         vueloRepository.deleteById(id);
     }
 
+    @Transactional
     public List<VueloDTO> getByTripulanteId(Long tripulanteId) {
         Tripulantes tripulante = tripulantesRepository.findById(tripulanteId)
             .orElseThrow(() -> new ResponseStatusException(
@@ -170,12 +171,16 @@ public class VueloService {
                 if (itinerario != null && itinerario.getDuracion() != null) {
                     int horas = itinerario.getDuracion().getHour();
                     int minutos = itinerario.getDuracion().getMinute();
-                    double duracionHoras = horas + (minutos / 60.0);
+                    int totalMinutos = horas * 60 + minutos;
     
-                    Double horasTotales = tripulante.getHoras_totales();
-                    if (horasTotales == null) horasTotales = 0.0;
+                    // Recorremos todos los tripulantes del vuelo
+                    for (Tripulantes t : vuelo.getTripulantes()) {
+                        int minutosAcumulados = convertirHorasTotalesAMinutos(t.getHoras_totales());
+                        minutosAcumulados += totalMinutos;
+                        t.setHoras_totales(convertirMinutosAHorasTotales(minutosAcumulados));
+                        tripulantesRepository.save(t);
+                    }
     
-                    tripulante.setHoras_totales(horasTotales + duracionHoras);
                     vuelo.setHorasSumadas(true);
                     actualizado = true;
                 }
@@ -183,7 +188,6 @@ public class VueloService {
         }
     
         if (actualizado) {
-            tripulantesRepository.save(tripulante);
             vueloRepository.saveAll(tripulante.getVuelos());
         }
     
@@ -191,25 +195,60 @@ public class VueloService {
     }
     
     
+// Convierte el formato HHH:MM a minutos totales
+private int convertirHorasTotalesAMinutos(String horasTotales) {
+    if (horasTotales == null || horasTotales.isEmpty()) return 0;
+    
+    String[] partes = horasTotales.split(":");
+    int horas = Integer.parseInt(partes[0]);
+    int minutos = Integer.parseInt(partes[1]);
+
+    return (horas * 60) + minutos;
+}
+
+// Convierte minutos totales a formato HHH:MM
+private String convertirMinutosAHorasTotales(int minutosTotales) {
+    int horas = minutosTotales / 60;
+    int minutos = minutosTotales % 60;
+
+    return String.format("%d:%02d", horas, minutos);
+}
+
+    
+    
+    
 
     @Transactional
     public void sumarHorasVuelosRealizados() {
         List<Vuelo> vuelosPendientes = vueloRepository.findAll().stream()
-            .filter(v -> v.getFecha_llegada() != null &&
-                         v.getFecha_llegada().isBefore(LocalDate.now()) &&
+            .filter(v -> v.getFecha_llegada() != null && 
+                         v.getFecha_llegada().isBefore(LocalDate.now().plusDays(1)) && 
                          !v.isHorasSumadas())
             .toList();
     
         for (Vuelo vuelo : vuelosPendientes) {
             Itinerario itinerario = vuelo.getItinerario();
             if (itinerario != null && itinerario.getDuracion() != null) {
-                int horas = itinerario.getDuracion().getHour();
-                int minutos = itinerario.getDuracion().getMinute();
-                double duracionHoras = horas + (minutos / 60.0);
-    
+                int horasVuelo = itinerario.getDuracion().getHour();
+                int minutosVuelo = itinerario.getDuracion().getMinute();
+                
                 for (Tripulantes tripulante : vuelo.getTripulantes()) {
-                    double actuales = tripulante.getHoras_totales() == null ? 0.0 : tripulante.getHoras_totales();
-                    tripulante.setHoras_totales(actuales + duracionHoras);
+                    String horasTotales = tripulante.getHoras_totales();
+                    String[] partes = horasTotales.split(":");
+                    int horasActuales = Integer.parseInt(partes[0]);
+                    int minutosActuales = Integer.parseInt(partes[1]);
+                    
+                    // Sumar horas y minutos
+                    int totalHoras = horasActuales + horasVuelo;
+                    int totalMinutos = minutosActuales + minutosVuelo;
+    
+                    // Convertir minutos a horas si son más de 60
+                    totalHoras += totalMinutos / 60;
+                    totalMinutos = totalMinutos % 60;
+    
+                    // Formatear como HHH:mm
+                    String nuevoTotal = String.format("%d:%02d", totalHoras, totalMinutos);
+                    tripulante.setHoras_totales(nuevoTotal);
                     tripulantesRepository.save(tripulante);
                 }
     
@@ -218,6 +257,7 @@ public class VueloService {
             }
         }
     }
+    
     
 
 }
