@@ -92,4 +92,12 @@ public class TripulantesController {
         tripulantesService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    // TripulantesController.java
+    @GetMapping("/vuelo/{vueloId}")
+    public ResponseEntity<List<TripulantesDTO>> getTripulantesByVuelo(@PathVariable Long vueloId) {
+        List<TripulantesDTO> tripus = tripulantesService.getByVueloId(vueloId);
+        return ResponseEntity.ok(tripus);
+    }
+
 }

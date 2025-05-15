@@ -141,15 +141,20 @@ public class VueloService {
         return vueloMapper.toDTO(vuelo);
     }
 
+    @Transactional
     public void delete(Long id) {
-        if (!vueloRepository.existsById(id)) {
-            throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "Vuelo no encontrado con id: " + id
-            );
+        Vuelo vuelo = vueloRepository.findById(id).orElseThrow(() ->
+            new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                        "Vuelo no encontrado con id: " + id));
+        for (Tripulantes t : vuelo.getTripulantes()) {
+            t.getVuelos().remove(vuelo);
+            tripulantesRepository.save(t);
         }
-        vueloRepository.deleteById(id);
+        vuelo.getTripulantes().clear();
+
+        vueloRepository.delete(vuelo);   // ahora sí
     }
+
 
     @Transactional
     public List<VueloDTO> getByTripulanteId(Long tripulanteId) {
