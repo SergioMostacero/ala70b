@@ -62,3 +62,20 @@ REINICIAR APP
 sudo systemctl restart spring-app
 
 ------------------------------------------------------------------
+
+http://44.212.4.74/api/tripulantes
+http://44.212.4.74:8080/api/tripulantes
+
+
+
+scp -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\Clave.pem" -r C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\target\api-0.0.1-SNAPSHOT.jar ubuntu@44.212.4.74:/opt/spring-app/
+scp -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\Clave.pem" -r C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local/src/main/resources ubuntu@44.212.4.74:/opt/spring-app/
+scp -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\Clave.pem" -r C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local/src/main/java ubuntu@44.212.4.74:/opt/spring-app/
+
+sudo rm -rf /var/www/html/front/front-ala70/*
+sudo chown -R ubuntu:www-data /var/www/html/front
+sudo chmod -R 775 /var/www/html/front
+scp -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\Clave.pem" -r C:\Users\CFGS.LAB37_PC\Desktop\TFG_Front_Local\dist\front-ala70 ubuntu@44.212.4.74:/var/www/html/front/
+sudo a2enmod rewrite
+sudo systemctl restart apache2
+

@@ -169,5 +169,19 @@ public TripulantesDTO updateTripulante(Long id, TripulantesDTO dto) {
         tripulantesRepository.deleteById(id);
     
    }
+
+    public List<TripulantesDTO> getByVueloId(Long vueloId) {
+
+        // --> Verificación rápida de que el vuelo existe
+        if (!vueloRepository.existsById(vueloId)) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Vuelo no encontrado con id: " + vueloId);
+        }
+
+        // --> Recuperamos la lista y la mapeamos a DTO
+        List<Tripulantes> tripus = tripulantesRepository.findByVuelos_Id(vueloId);
+        return tripulantesMapper.toListDTO(tripus);
+    }
+
 }
    

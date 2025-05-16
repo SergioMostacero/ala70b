@@ -2,6 +2,8 @@ package com.example.demo.services;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -98,58 +100,69 @@ public class VueloService {
 
     
 
-    public VueloDTO updateVuelo(Long id, VueloDTO dto) {
-        Vuelo vuelo = vueloRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Vuelo no encontrado"));
+    @Transactional                                  // ¡importante!
+public VueloDTO updateVuelo(Long id, VueloDTO dto) {
 
-        // Campos básicos
-        vuelo.setFecha_salida(dto.getFecha_salida());
-        vuelo.setHora_salida(dto.getHora_salida());
-        vuelo.setHora_llegada(dto.getHora_llegada());
-        vuelo.setFecha_llegada(dto.getFecha_llegada());
-        vuelo.setAnticipo(dto.getAnticipo());
-        vuelo.setCombustible(dto.getCombustible());
+    Vuelo vuelo = vueloRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Vuelo no encontrado"));
 
-        // Avion
-        if (dto.getAvionDTO() != null && dto.getAvionDTO().getId() != null) {
-            Avion avion = avionRepository.findById(dto.getAvionDTO().getId())
-                .orElseThrow(() -> new RuntimeException("Avión no encontrado"));
-            vuelo.setAvion(avion);
-        } else {
-            vuelo.setAvion(null);
+    /* ---------- 1. Campos básicos (como lo tenías) --------- */
+    vuelo.setFecha_salida(dto.getFecha_salida());
+    vuelo.setHora_salida(dto.getHora_salida());
+    vuelo.setHora_llegada(dto.getHora_llegada());
+    vuelo.setFecha_llegada(dto.getFecha_llegada());
+    vuelo.setAnticipo(dto.getAnticipo());
+    vuelo.setCombustible(dto.getCombustible());
+    // … avión / misión / itinerario igual que antes …
+
+    /* ---------- 2. Sincronizar TRIPULANTES ----------------- */
+    // 2-a) Quitar a los que ya no vengan en el DTO
+    var actuales = List.copyOf(vuelo.getTripulantes());   // evitamos ConcurrentModification
+    var nuevosIds = dto.getTripulantesDTO() == null
+            ? Set.<Long>of()
+            : dto.getTripulantesDTO().stream()
+                  .map(TripulantesDTO::getId)
+                  .collect(Collectors.toSet());
+
+    for (Tripulantes t : actuales) {
+        if (!nuevosIds.contains(t.getId())) {
+            t.getVuelos().remove(vuelo);           // lado dueño
+            vuelo.getTripulantes().remove(t);      // opcional si la colección es bidireccional
+            tripulantesRepository.save(t);
         }
-
-        // Mision
-        if (dto.getMisionDTO() != null && dto.getMisionDTO().getId() != null) {
-            Mision mision = misionRepository.findById(dto.getMisionDTO().getId())
-                .orElseThrow(() -> new RuntimeException("Misión no encontrada"));
-            vuelo.setMisiones(mision);
-        } else {
-            vuelo.setMisiones(null);
-        }
-
-        // Itinerario
-        if (dto.getItinerarioDTO() != null && dto.getItinerarioDTO().getId() != null) {
-            Itinerario itinerario = itinerarioRepository.findById(dto.getItinerarioDTO().getId())
-                .orElseThrow(() -> new RuntimeException("Itinerario no encontrado"));
-            vuelo.setItinerario(itinerario);
-        } else {
-            vuelo.setItinerario(null);
-        }
-
-        vuelo = vueloRepository.save(vuelo);
-        return vueloMapper.toDTO(vuelo);
     }
 
+    // 2-b) Añadir a los que faltan
+    for (Long idNuevo : nuevosIds) {
+        boolean yaEsta = actuales.stream().anyMatch(t -> t.getId().equals(idNuevo));
+        if (!yaEsta) {
+            Tripulantes nuevo = tripulantesRepository.findById(idNuevo)
+                .orElseThrow(() -> new RuntimeException("Tripulante no encontrado"));
+            nuevo.getVuelos().add(vuelo);          // lado dueño
+            vuelo.getTripulantes().add(nuevo);
+            tripulantesRepository.save(nuevo);
+        }
+    }
+
+    Vuelo actualizado = vueloRepository.save(vuelo);
+    return vueloMapper.toDTO(actualizado);
+}
+
+
+    @Transactional
     public void delete(Long id) {
-        if (!vueloRepository.existsById(id)) {
-            throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "Vuelo no encontrado con id: " + id
-            );
+        Vuelo vuelo = vueloRepository.findById(id).orElseThrow(() ->
+            new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                        "Vuelo no encontrado con id: " + id));
+        for (Tripulantes t : vuelo.getTripulantes()) {
+            t.getVuelos().remove(vuelo);
+            tripulantesRepository.save(t);
         }
-        vueloRepository.deleteById(id);
+        vuelo.getTripulantes().clear();
+
+        vueloRepository.delete(vuelo);   // ahora sí
     }
+
 
     @Transactional
     public List<VueloDTO> getByTripulanteId(Long tripulanteId) {
