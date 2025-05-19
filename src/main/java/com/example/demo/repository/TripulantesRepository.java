@@ -15,5 +15,5 @@ public interface TripulantesRepository extends JpaRepository<Tripulantes,Long>{
     Optional<Tripulantes> findByEmailAndContrasena(String email, String contrasena);
     List<Tripulantes> findByOficioNombreIgnoreCase(String nombre);
     List<Tripulantes> findByVuelos_Id(Long vueloId);
-
+    List<Tripulantes> findAllByMedallas_Id(Long medallaId);
 }

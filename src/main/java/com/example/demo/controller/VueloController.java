@@ -41,7 +41,6 @@ public class VueloController {
     @PostMapping
     public ResponseEntity<VueloDTO> createVuelo(@RequestBody VueloDTO vueloDto) {
         VueloDTO created = vueloService.createVuelo(vueloDto);
-        // Devolvemos 201 (Created) en lugar de 200 (OK)
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 

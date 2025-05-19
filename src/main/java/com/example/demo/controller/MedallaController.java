@@ -49,4 +49,10 @@ public class MedallaController {
         return ResponseEntity.ok("Medalla asignada correctamente");
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMedalla(@PathVariable Long id) {
+        medallaService.deleteMedalla(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
