@@ -42,16 +42,20 @@ public class AvionService {
     }
 
     public AvionDTO updateAvion(AvionDTO dto) {
-        if (!avionRepository.existsById(dto.getId())) {
-            throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "Avión no encontrado con id: " + dto.getId()
-            );
-        }
-        Avion toSave = avionMapper.toEntity(dto);
-        Avion actualizado = avionRepository.save(toSave);
-        return avionMapper.toDTO(actualizado);
-    }
+    // Obtener el avión existente de la base de datos
+    Avion existingAvion = avionRepository.findById(dto.getId())
+        .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Avión no encontrado con id: " + dto.getId()
+        ));
+    
+    // Actualizar solo los campos necesarios del DTO
+    existingAvion.setNombre(dto.getNombre());
+    existingAvion.setMax_combustible(dto.getMax_combustible());
+    
+    Avion actualizado = avionRepository.save(existingAvion);
+    return avionMapper.toDTO(actualizado);
+}
 
     public void deleteAvion(Long id) {
         if (!avionRepository.existsById(id)) {
