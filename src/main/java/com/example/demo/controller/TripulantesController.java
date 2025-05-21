@@ -72,8 +72,15 @@ public class TripulantesController {
         return ResponseEntity.ok(tecnicos);
     }
 
-    @PostMapping
-    public ResponseEntity<TripulantesDTO> createTripulante(@RequestBody TripulantesDTO dto) {
+     @PostMapping
+    public ResponseEntity<?> createTripulante(@RequestBody TripulantesDTO dto) {
+
+        if (tripulantesService.existsByEmail(dto.getEmail())) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)                // 409
+                    .body(Map.of("message","El email ya está registrado"));
+        }
+
         TripulantesDTO created = tripulantesService.createTripulantes(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
@@ -93,11 +100,14 @@ public class TripulantesController {
         return ResponseEntity.noContent().build();
     }
 
-    // TripulantesController.java
     @GetMapping("/vuelo/{vueloId}")
     public ResponseEntity<List<TripulantesDTO>> getTripulantesByVuelo(@PathVariable Long vueloId) {
         List<TripulantesDTO> tripus = tripulantesService.getByVueloId(vueloId);
         return ResponseEntity.ok(tripus);
     }
 
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> emailExists(@RequestParam String email){
+        return ResponseEntity.ok(tripulantesService.existsByEmail(email));
+    }
 }
