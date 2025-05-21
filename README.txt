@@ -15,7 +15,7 @@ Crear imagenes y contenedores de Docker:
 
 ------------------- PRODUCCIÓN EN UBUNTU 22.04 -------------------
 ENTRAR AL SERVER
-ssh -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\clave.pem" ubuntu@44.212.4.74 (RUTA DONDE ESTE LA CLAVE.PEM)
+ssh -i "C:\Users\hugoj\Desktop\TFG_Back_local\clave.pem" ubuntu@35.171.18.46 (RUTA DONDE ESTE LA CLAVE.PEM)
 
 
 INICIAR SPRINGBOOT
@@ -63,14 +63,14 @@ sudo systemctl restart spring-app
 
 ------------------------------------------------------------------
 
-http://44.212.4.74/api/tripulantes
-http://44.212.4.74:8080/api/tripulantes
+http://35.171.18.46/api/tripulantes
+http://35.171.18.46:8080/api/tripulantes
 
 
 
-scp -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\Clave.pem" -r C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\target\api-0.0.1-SNAPSHOT.jar ubuntu@44.212.4.74:/opt/spring-app/
-scp -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\Clave.pem" -r C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local/src/main/resources ubuntu@44.212.4.74:/opt/spring-app/
-scp -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\Clave.pem" -r C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local/src/main/java ubuntu@44.212.4.74:/opt/spring-app/
+scp -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\Clave.pem" -r C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\target\api-0.0.1-SNAPSHOT.jar ubuntu@35.171.18.46:/opt/spring-app/
+scp -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\Clave.pem" -r C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local/src/main/resources ubuntu@35.171.18.46:/opt/spring-app/
+scp -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\Clave.pem" -r C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local/src/main/java ubuntu@35.171.18.46:/opt/spring-app/
 
 sudo rm -rf /var/www/html/front/front-ala70/*
 sudo chown -R ubuntu:www-data /var/www/html/front
