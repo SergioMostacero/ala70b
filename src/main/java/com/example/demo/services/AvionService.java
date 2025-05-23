@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.DTO.AvionDTO;
 import com.example.demo.mapper.AvionMapper.AvionMapper;
 import com.example.demo.model.Avion;
+import com.example.demo.model.Vuelo;
 import com.example.demo.repository.AvionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,18 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import com.example.demo.repository.VueloRepository;
+
+import jakarta.transaction.Transactional;
+
 @Service
 public class AvionService {
 
     @Autowired
     private AvionRepository avionRepository;
+
+    @Autowired
+    private  VueloService vueloService;
 
     @Autowired
     private AvionMapper avionMapper;
@@ -57,13 +65,19 @@ public class AvionService {
     return avionMapper.toDTO(actualizado);
 }
 
+    @Transactional
     public void deleteAvion(Long id) {
-        if (!avionRepository.existsById(id)) {
-            throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "Avión no encontrado con id: " + id
-            );
+
+        Avion avion = avionRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Avión no encontrado con id: " + id));
+
+        for (Vuelo v : List.copyOf(avion.getVuelos())) {   
+            vueloService.delete(v.getId());                
         }
-        avionRepository.deleteById(id);
+
+        avionRepository.delete(avion);      
     }
+
 }

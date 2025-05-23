@@ -40,7 +40,7 @@ public class Avion {
     private BigDecimal max_combustible;
 
 
-    @OneToMany(mappedBy = "avion", cascade = CascadeType.REMOVE,orphanRemoval = true)
+    @OneToMany( mappedBy = "avion", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Vuelo> vuelos;
 

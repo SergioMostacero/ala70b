@@ -55,7 +55,7 @@ public class Vuelo {
     private boolean horasSumadas = false;
 
     @ManyToOne
-    @JoinColumn(name = "avion_id")
+    @JoinColumn(name = "avion_id", nullable = false)
     private Avion avion;
 
     @ManyToOne
