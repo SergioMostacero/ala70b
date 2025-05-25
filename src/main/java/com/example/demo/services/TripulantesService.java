@@ -156,9 +156,6 @@ public TripulantesDTO updateTripulante(Long id, TripulantesDTO dto) {
         return tripulantesMapper.toDTO(updated);
     }
 
-    /**
-     * Elimina un tripulante por ID
-     */
     public void delete(Long id) {
         if (!tripulantesRepository.existsById(id)) {
             throw new ResponseStatusException(
@@ -172,16 +169,17 @@ public TripulantesDTO updateTripulante(Long id, TripulantesDTO dto) {
 
     public List<TripulantesDTO> getByVueloId(Long vueloId) {
 
-        // --> Verificación rápida de que el vuelo existe
         if (!vueloRepository.existsById(vueloId)) {
             throw new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "Vuelo no encontrado con id: " + vueloId);
         }
 
-        // --> Recuperamos la lista y la mapeamos a DTO
         List<Tripulantes> tripus = tripulantesRepository.findByVuelos_Id(vueloId);
         return tripulantesMapper.toListDTO(tripus);
     }
 
+    public boolean existsByEmail(String email) {
+        return tripulantesRepository.existsByEmailIgnoreCase(email);
+    }
 }
    

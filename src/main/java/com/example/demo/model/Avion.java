@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +33,6 @@ public class Avion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // enum
     @Column
     private String nombre;
 
@@ -40,7 +40,7 @@ public class Avion {
     private BigDecimal max_combustible;
 
 
-    @OneToMany(mappedBy = "avion")
+    @OneToMany(mappedBy = "avion", cascade = CascadeType.REMOVE,orphanRemoval = true)
     @JsonIgnore
     private List<Vuelo> vuelos;
 

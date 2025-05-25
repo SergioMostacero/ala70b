@@ -7,6 +7,8 @@ import com.example.demo.model.Tripulantes;
 import com.example.demo.repository.MedallaRepository;
 import com.example.demo.repository.TripulantesRepository;
 
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -62,4 +64,26 @@ public class MedallaService {
         tripulante.getMedallas().add(medalla);
         tripulantesRepository.save(tripulante);
       }
+
+    @Transactional
+    public void deleteMedalla(Long id) {
+        if (!medallaRepository.existsById(id)) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, 
+                "Medalla no encontrada con ID: " + id
+            );
+        }
+
+        // 1) Desasignar de todos los tripulantes
+        List<Tripulantes> holders = tripulantesRepository.findAllByMedallas_Id(id);
+        for (Tripulantes t : holders) {
+            t.getMedallas().removeIf(m -> m.getId().equals(id));
+        }
+        // Salvar en bloque para actualizar la relación muchos-a-muchos
+        tripulantesRepository.saveAll(holders);
+
+        // 2) Borrar la medalla
+        medallaRepository.deleteById(id);
+    }
+
 }

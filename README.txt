@@ -15,7 +15,7 @@ Crear imagenes y contenedores de Docker:
 
 ------------------- PRODUCCIÓN EN UBUNTU 22.04 -------------------
 ENTRAR AL SERVER
-ssh -i "C:\Users\hugoj\Desktop\TFG_Back_local\clave.pem" ubuntu@35.171.18.46 (RUTA DONDE ESTE LA CLAVE.PEM)
+ssh -i "C:\Users\hugoj\Desktop\TFG_Back_local\clave.pem" ubuntu@13.53.121.210 (RUTA DONDE ESTE LA CLAVE.PEM)
 
 
 INICIAR SPRINGBOOT
@@ -55,7 +55,8 @@ sudo systemctl daemon-reload
 
 
 SUBIR NUEVOS ARCHIVOS DEL PROYECTO
-scp -i "C:\ruta\de\tu\clave.pem" -r C:\ruta\de\tu\proyecto\* ubuntu@44.212.4.74:/home/ubuntu/TFG_Back_local/
+scp -i "C:\Users\hugoj\Desktop\TFG_Back_local\clave.pem" C:\Users\hugoj\Desktop\TFG_Back_local\target\api-0.0.1-SNAPSHOT.jar ubuntu@13.53.121.210:/opt/ala70tfg/backend/
+
 
 
 REINICIAR APP
@@ -67,15 +68,8 @@ http://35.171.18.46/api/tripulantes
 http://35.171.18.46:8080/api/tripulantes
 
 
+scp -i "C:\Users\hugoj\Desktop\Front_local\clave.pem" -r C:\Users\hugoj\Desktop\TFG_Back_local\dist\front-ala70 ubuntu@13.53.121.210:/var/www/html/front-ala70/
 
-scp -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\Clave.pem" -r C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\target\api-0.0.1-SNAPSHOT.jar ubuntu@35.171.18.46:/opt/spring-app/
-scp -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\Clave.pem" -r C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local/src/main/resources ubuntu@35.171.18.46:/opt/spring-app/
-scp -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\Clave.pem" -r C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local/src/main/java ubuntu@35.171.18.46:/opt/spring-app/
-
-sudo rm -rf /var/www/html/front/front-ala70/*
-sudo chown -R ubuntu:www-data /var/www/html/front
-sudo chmod -R 775 /var/www/html/front
-scp -i "C:\Users\CFGS.LAB37_PC\Desktop\TFG_Back_local\Clave.pem" -r C:\Users\CFGS.LAB37_PC\Desktop\TFG_Front_Local\dist\front-ala70 ubuntu@44.212.4.74:/var/www/html/front/
-sudo a2enmod rewrite
-sudo systemctl restart apache2
+Generar certificado
+sudo certbot --apache -d ala70tfg.com
 
