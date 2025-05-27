@@ -73,17 +73,23 @@ public class MedallaService {
                 "Medalla no encontrada con ID: " + id
             );
         }
-
-        // 1) Desasignar de todos los tripulantes
         List<Tripulantes> holders = tripulantesRepository.findAllByMedallas_Id(id);
         for (Tripulantes t : holders) {
             t.getMedallas().removeIf(m -> m.getId().equals(id));
         }
-        // Salvar en bloque para actualizar la relación muchos-a-muchos
         tripulantesRepository.saveAll(holders);
-
-        // 2) Borrar la medalla
         medallaRepository.deleteById(id);
+    }
+
+    public MedallaDTO updateMedalla(Long id, MedallaDTO dto) {
+        Medalla medalla = medallaRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Medalla no encontrada"));
+
+        medalla.setNombre(dto.getNombre());
+        medalla.setDescripcion(dto.getDescripcion());
+        Medalla guardada = medallaRepository.save(medalla);
+        return medallaMapper.toDTO(guardada);
     }
 
 }

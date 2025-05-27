@@ -231,45 +231,60 @@ private String convertirMinutosAHorasTotales(int minutosTotales) {
     
     
 
-    @Transactional
-    public void sumarHorasVuelosRealizados() {
-        List<Vuelo> vuelosPendientes = vueloRepository.findAll().stream()
-            .filter(v -> v.getFecha_llegada() != null && 
-                         v.getFecha_llegada().isBefore(LocalDate.now().plusDays(1)) && 
-                         !v.isHorasSumadas())
-            .toList();
-    
-        for (Vuelo vuelo : vuelosPendientes) {
-            Itinerario itinerario = vuelo.getItinerario();
-            if (itinerario != null && itinerario.getDuracion() != null) {
-                int horasVuelo = itinerario.getDuracion().getHour();
-                int minutosVuelo = itinerario.getDuracion().getMinute();
-                
-                for (Tripulantes tripulante : vuelo.getTripulantes()) {
-                    String horasTotales = tripulante.getHoras_totales();
+@Transactional
+public void sumarHorasVuelosRealizados() {
+    List<Vuelo> vuelosPendientes = vueloRepository.findAll().stream()
+        .filter(v -> v.getFecha_llegada() != null &&
+                     v.getFecha_llegada().isBefore(LocalDate.now().plusDays(1)) &&
+                     !v.isHorasSumadas())
+        .toList();
+
+    for (Vuelo vuelo : vuelosPendientes) {
+        Itinerario itinerario = vuelo.getItinerario();
+        if (itinerario != null && itinerario.getDuracion() != null) {
+            int horasVuelo = itinerario.getDuracion().getHour();
+            int minutosVuelo = itinerario.getDuracion().getMinute();
+
+            for (Tripulantes tripulante : vuelo.getTripulantes()) {
+                String horasTotales = tripulante.getHoras_totales();
+
+                int horasActuales = 0;
+                int minutosActuales = 0;
+
+                if (horasTotales != null && horasTotales.contains(":")) {
                     String[] partes = horasTotales.split(":");
-                    int horasActuales = Integer.parseInt(partes[0]);
-                    int minutosActuales = Integer.parseInt(partes[1]);
-                    
-                    // Sumar horas y minutos
-                    int totalHoras = horasActuales + horasVuelo;
-                    int totalMinutos = minutosActuales + minutosVuelo;
-    
-                    // Convertir minutos a horas si son más de 60
-                    totalHoras += totalMinutos / 60;
-                    totalMinutos = totalMinutos % 60;
-    
-                    // Formatear como HHH:mm
-                    String nuevoTotal = String.format("%d:%02d", totalHoras, totalMinutos);
-                    tripulante.setHoras_totales(nuevoTotal);
-                    tripulantesRepository.save(tripulante);
+                    if (partes.length == 2) {
+                        try {
+                            horasActuales = Integer.parseInt(partes[0]);
+                            minutosActuales = Integer.parseInt(partes[1]);
+                        } catch (NumberFormatException e) {
+                            System.err.println("Formato inválido en horas_totales: " + horasTotales);
+                        }
+                    } else {
+                        System.err.println("Formato inesperado en horas_totales: " + horasTotales);
+                    }
                 }
-    
-                vuelo.setHorasSumadas(true);
-                vueloRepository.save(vuelo);
+
+                // Sumar horas y minutos
+                int totalHoras = horasActuales + horasVuelo;
+                int totalMinutos = minutosActuales + minutosVuelo;
+
+                // Convertir minutos a horas si son más de 60
+                totalHoras += totalMinutos / 60;
+                totalMinutos = totalMinutos % 60;
+
+                // Formatear como HHH:mm
+                String nuevoTotal = String.format("%d:%02d", totalHoras, totalMinutos);
+                tripulante.setHoras_totales(nuevoTotal);
+                tripulantesRepository.save(tripulante);
             }
+
+            vuelo.setHorasSumadas(true);
+            vueloRepository.save(vuelo);
         }
     }
+}
+
     
     
 

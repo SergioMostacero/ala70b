@@ -55,4 +55,15 @@ public class MedallaController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<MedallaDTO> updateMedalla(
+            @PathVariable Long id,
+            @RequestBody MedallaDTO dto) {
+
+        MedallaDTO updated = medallaService.updateMedalla(id, dto);
+        return ResponseEntity.ok(updated);
+    }
+
+
+
 }
